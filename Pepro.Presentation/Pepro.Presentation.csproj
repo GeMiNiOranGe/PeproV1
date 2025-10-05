@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Pepro.DTOs\Pepro.DTOs.csproj" />
     <ProjectReference Include="..\Pepro.Business\Pepro.Business.csproj" />
-    <ProjectReference Include="..\Pepro.DataAccess\Pepro.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

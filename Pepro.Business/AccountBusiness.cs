@@ -3,8 +3,8 @@ using Pepro.Business.Utilities;
 using Pepro.Business.Security;
 using Pepro.DataAccess;
 using Pepro.DataAccess.Entities;
-using Pepro.DTOs;
 using Pepro.DataAccess.Contracts;
+using Pepro.Business.Contracts;
 
 namespace Pepro.Business;
 

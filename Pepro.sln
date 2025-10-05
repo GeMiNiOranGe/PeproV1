@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepro.DTOs", "Pepro.DTOs\Pepro.DTOs.csproj", "{C8B046D7-286D-41C5-BA96-204531DF24AC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepro.Business", "Pepro.Business\Pepro.Business.csproj", "{EFA16B32-7C07-4F33-8C8D-4153FBB38DFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepro.DataAccess", "Pepro.DataAccess\Pepro.DataAccess.csproj", "{8DFE98A9-EE6F-47E7-B473-BFAD18E46EEF}"
@@ -26,18 +24,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Debug|x64.Build.0 = Debug|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Debug|x86.Build.0 = Debug|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Release|x64.ActiveCfg = Release|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Release|x64.Build.0 = Release|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Release|x86.ActiveCfg = Release|Any CPU
-		{C8B046D7-286D-41C5-BA96-204531DF24AC}.Release|x86.Build.0 = Release|Any CPU
 		{EFA16B32-7C07-4F33-8C8D-4153FBB38DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFA16B32-7C07-4F33-8C8D-4153FBB38DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA16B32-7C07-4F33-8C8D-4153FBB38DFA}.Debug|x64.ActiveCfg = Debug|Any CPU

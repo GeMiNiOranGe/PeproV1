@@ -1,4 +1,4 @@
-namespace Pepro.DTOs;
+namespace Pepro.Business.Contracts;
 
 public class EmployeeView : EmployeeDto
 {

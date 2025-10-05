@@ -1,4 +1,4 @@
-﻿using Pepro.DTOs;
+﻿using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
 using System.ComponentModel;
 

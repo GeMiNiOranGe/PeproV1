@@ -1,5 +1,5 @@
 ﻿using Pepro.Business;
-using Pepro.DTOs;
+using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Molecules;
 using Pepro.Presentation.Controls.Templates;
 using Pepro.Presentation.Utilities;

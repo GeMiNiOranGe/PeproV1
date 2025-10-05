@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Pepro.DTOs;
+namespace Pepro.Business.Contracts;
 
 public class DocumentDto
 {

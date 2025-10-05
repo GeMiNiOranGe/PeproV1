@@ -1,5 +1,5 @@
 ﻿using Pepro.Business;
-using Pepro.DTOs;
+using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Atoms;
 using Pepro.Presentation.Utilities;
 using System.ComponentModel;

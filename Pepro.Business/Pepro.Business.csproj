@@ -5,7 +5,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pepro.DTOs\Pepro.DTOs.csproj" />
     <ProjectReference Include="..\Pepro.DataAccess\Pepro.DataAccess.csproj" />
   </ItemGroup>
 
