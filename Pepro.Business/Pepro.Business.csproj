@@ -1,10 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Pepro.DataAccess\Pepro.DataAccess.csproj" />
   </ItemGroup>
 
