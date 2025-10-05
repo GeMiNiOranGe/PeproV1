@@ -15,15 +15,15 @@ public class CrudTemplate : MediatedTemplate
         Action<ItemType>? onCellClicked = null
     )
     {
+        int selectedRowIndex = e.RowIndex;
+
         // Ignore clicks on the column header or invalid row indices
-        if (e.RowIndex < 0 || e.RowIndex >= dataGridView.Rows.Count)
+        if (selectedRowIndex < 0 || selectedRowIndex >= dataGridView.Rows.Count)
         {
             return;
         }
 
-        DataGridViewRow row = dataGridView.Rows[e.RowIndex];
-
-        if (row.DataBoundItem is ItemType item)
+        if (dataGridView.Rows[selectedRowIndex].DataBoundItem is ItemType item)
         {
             onCellClicked?.Invoke(item);
         }

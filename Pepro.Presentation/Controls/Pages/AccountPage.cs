@@ -1,7 +1,6 @@
 ﻿using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
-using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Utilities;
 

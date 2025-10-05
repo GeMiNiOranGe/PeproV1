@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Pepro.Business.Contracts;
+﻿namespace Pepro.Business.Contracts;
 
 public class AssignmentDto
 {
