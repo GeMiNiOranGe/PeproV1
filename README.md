@@ -1,18 +1,63 @@
-# iPPS 
-iPPS stands for integrated Project Printing/Publishing System application
+# Pepro
 
-Window form application programmed using dotNET framework 4.8
+![Make WinForms Great Again](https://img.shields.io/badge/WinForms-Great_Again-blue?style=for-the-badge&logo=windows)
 
-You are a developer and you want to run this project, you have to follow these instructions
+*Make WinForms Great Again!* 🎉
 
-* Step 1: clone this project
-	```bash
-	git clone https://github.com/GeMiNiOranGe/iPPS.git
-	```
-* Step 2: open 'iPPS.sln' by Visual Studio
+**Pepro** - Personnel and Project Management System (short for *Pepro Management System*) is a Windows Forms (WinForms) application built with C# for managing personnel, projects, payroll, and internal documentation. It is designed for desktop environments with a focus on modular design, 3-layer model architecture, and SQL Server integration.
 
-* Step 3: open MSSQL server management and execute 'PROJECT_MANAGEMENT.sql'
+## 📌 Features
 
-* Step 4: return visual studio, change connection string in 'DataProvider.cs' of DAL and 'Config.cs' of GUI
+- 👨‍💻 Personnel, Project, task and department management
+- 💰 Salary and payroll processing
+- 🔐 Secure data with symmetric encryption
+- 📊 Role-based access and permission control
+- 🧱 Layered architecture, 3-layer model (Presentation, Business, DataAccess)
 
-* Step 5: build and run the app
+## 🖥️ Technologies Used
+
+- 💻 **.NET 9+**
+- 🧱 **WinForms (Windows Forms)**
+- 🗄️ **SQL Server**
+
+## 🛠️ Project Structure
+
+```
+Pepro/
+├── Pepro.Presentation/		# WinForms UI Layer
+├── Pepro.Business/         # Business Logic Layer
+├── Pepro.DataAccess/       # SQL Data Access Layer
+└── Database/               # SQL scripts (schema + seed)
+```
+
+## 🚀 Getting Started
+
+1. Clone the Repository
+2. Open in Visual Studio
+
+	* Open [`Pepro.sln`](Pepro.sln) with Visual Studio 2022 or newer
+
+3. Set up the Database
+
+	* Update the connection string in [`Pepro.DataAccess\Utilities\DataProvider.cs`](Pepro.DataAccess\Utilities\DataProvider.cs#L8)
+
+4. Build and Run
+
+	* Set `Pepro.Presentation` as the startup project
+	* Press `F5` to run the application
+
+## 🧑‍💻 Contributing
+
+We welcome contributions!
+
+* Check out our [Contributing Guide](CONTRIBUTING.md)
+* Follow our [Code Style Guidelines](CODE_STYLE.md)
+
+## 📷 Screenshots
+
+*Not available*
+
+## 📃 License
+
+<!-- This project is open source and available under the MIT License. -->
+*Not available*
