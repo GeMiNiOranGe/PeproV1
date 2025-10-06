@@ -4,15 +4,7 @@ namespace Pepro.Presentation.Interfaces;
 
 public interface IEditorUserControl<ItemType>
 {
-    ItemType Item
-    {
-        get;
-        set;
-    }
+    ItemType Item { get; set; }
 
-    EditorMode Mode
-    {
-        get;
-        set;
-    }
+    EditorMode Mode { get; set; }
 }

@@ -1,10 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Contracts;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -22,7 +22,7 @@ public class DepartmentDataAccess
 
     public Department? GetById(int departmentId)
     {
-        string query = @"
+        string query = """
             SELECT Department.DepartmentId
                 , Department.Name
                 , Department.ManagerId
@@ -33,7 +33,7 @@ public class DepartmentDataAccess
             FROM Department
             WHERE Department.DepartmentId = @DepartmentId
                 AND Department.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("DepartmentId", SqlDbType.Int, departmentId);
 
@@ -44,7 +44,7 @@ public class DepartmentDataAccess
 
     public IEnumerable<Department> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Department.DepartmentId
                 , Department.Name
                 , Department.ManagerId
@@ -54,7 +54,7 @@ public class DepartmentDataAccess
                 , Department.DeletedAt
             FROM Department
             WHERE Department.IsDeleted = 0
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
@@ -68,7 +68,7 @@ public class DepartmentDataAccess
             return [];
         }
 
-        string query = @"
+        string query = """
             SELECT Department.DepartmentId
                 , Department.Name
                 , Department.ManagerId
@@ -80,7 +80,7 @@ public class DepartmentDataAccess
             INNER JOIN @DepartmentIds AS DepartmentIds
                     ON DepartmentIds.Id = Department.DepartmentId
             WHERE Department.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
 
         DataTable entityIds = TableParameters.CreateEntityIds(departmentIds);
@@ -93,7 +93,7 @@ public class DepartmentDataAccess
 
     public IEnumerable<Department> Search(string searchValue)
     {
-        string query = @"
+        string query = """
             SELECT Department.DepartmentId
                 , Department.Name
                 , Department.ManagerId
@@ -104,9 +104,14 @@ public class DepartmentDataAccess
             FROM Department
             WHERE Department.Name LIKE '%' + @SearchValue + '%'
                 AND Department.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
-        parameters.Add("SearchValue", SqlDbType.NVarChar, DatabaseConstants.SEARCH_SIZE, searchValue);
+        parameters.Add(
+            "SearchValue",
+            SqlDbType.NVarChar,
+            DatabaseConstants.SEARCH_SIZE,
+            searchValue
+        );
 
         return DataProvider
             .Instance.ExecuteQuery(query, [.. parameters])
@@ -115,7 +120,7 @@ public class DepartmentDataAccess
 
     public int Insert(InsertDepartmentModel model)
     {
-        string query = @"
+        string query = """
             INSERT INTO Department
             (
                 Name
@@ -126,7 +131,7 @@ public class DepartmentDataAccess
                 @Name
                 , @ManagerId
             )
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("Name", SqlDbType.NVarChar, 50, model.Name);
         parameters.Add("ManagerId", SqlDbType.Int, model.ManagerId);
@@ -148,17 +153,20 @@ public class DepartmentDataAccess
             return 0;
         }
 
-        return DataProvider.Instance.ExecuteNonQuery(result.Query, [.. result.Parameters]);
+        return DataProvider.Instance.ExecuteNonQuery(
+            result.Query,
+            [.. result.Parameters]
+        );
     }
 
     public int Delete(int departmentId)
     {
-        string query = @"
+        string query = """
             UPDATE Department
             SET IsDeleted = 1,
                 DeletedAt = GetDate()
             WHERE DepartmentId = @DepartmentId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("DepartmentId", SqlDbType.Int, departmentId);
 

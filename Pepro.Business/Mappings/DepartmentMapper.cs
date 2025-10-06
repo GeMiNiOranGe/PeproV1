@@ -25,7 +25,9 @@ static class DepartmentMapper
         };
     }
 
-    public static IEnumerable<DepartmentDto> ToDtos(this IEnumerable<Department> entities)
+    public static IEnumerable<DepartmentDto> ToDtos(
+        this IEnumerable<Department> entities
+    )
     {
         return entities.Select(entity => entity.ToDto());
     }

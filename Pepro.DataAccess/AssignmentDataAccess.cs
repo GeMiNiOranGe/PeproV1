@@ -1,10 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Contracts;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -22,7 +22,7 @@ public class AssignmentDataAccess
 
     public Assignment? GetById(int assignmentId)
     {
-        string query = @"
+        string query = """
             SELECT Assignment.AssignmentId
                 , Assignment.Name
                 , Assignment.IsPublicToProject
@@ -37,10 +37,10 @@ public class AssignmentDataAccess
                 , Assignment.CreatedAt
                 , Assignment.UpdatedAt
                 , Assignment.DeletedAt
-            FROM Assignment 
+            FROM Assignment
             WHERE Assignment.AssignmentId = @AssignmentId
                 AND Assignment.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("AssignmentId", SqlDbType.Int, assignmentId);
 
@@ -51,7 +51,7 @@ public class AssignmentDataAccess
 
     public Assignment? GetByDocumentId(int documentId)
     {
-        string query = @"
+        string query = """
             SELECT Assignment.AssignmentId
                 , Assignment.Name
                 , Assignment.IsPublicToProject
@@ -71,7 +71,7 @@ public class AssignmentDataAccess
                     ON Document.AssignmentId = Assignment.AssignmentId
             WHERE Document.DocumentId = @DocumentId
                 AND Assignment.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("DocumentId", SqlDbType.Int, documentId);
 
@@ -89,7 +89,7 @@ public class AssignmentDataAccess
     /// </returns>
     public Employee? GetManager(int assignmentId)
     {
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -110,7 +110,7 @@ public class AssignmentDataAccess
                     ON Assignment.ManagerId = Employee.EmployeeId
             WHERE Assignment.AssignmentId = @AssignmentId
                 AND Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("AssignmentId", SqlDbType.VarChar, 10, assignmentId);
 
@@ -121,7 +121,7 @@ public class AssignmentDataAccess
 
     public IEnumerable<Assignment> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Assignment.AssignmentId
                 , Assignment.Name
                 , Assignment.IsPublicToProject
@@ -136,9 +136,9 @@ public class AssignmentDataAccess
                 , Assignment.CreatedAt
                 , Assignment.UpdatedAt
                 , Assignment.DeletedAt
-            FROM Assignment 
+            FROM Assignment
             WHERE Assignment.IsDeleted = 0
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
@@ -147,7 +147,7 @@ public class AssignmentDataAccess
 
     public IEnumerable<Assignment> GetManyByEmployeeId(int employeeId)
     {
-        string query = @"
+        string query = """
             SELECT Assignment.AssignmentId
                 , Assignment.Name
                 , Assignment.IsPublicToProject
@@ -167,7 +167,7 @@ public class AssignmentDataAccess
                     ON AssignmentDetail.AssignmentId = Assignment.AssignmentId
             WHERE AssignmentDetail.EmployeeId = @EmployeeId
                 AND Assignment.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("EmployeeId", SqlDbType.Int, employeeId);
 
@@ -178,7 +178,7 @@ public class AssignmentDataAccess
 
     public IEnumerable<Assignment> GetManyByProjectId(int projectId)
     {
-        string query = @"
+        string query = """
             SELECT Assignment.AssignmentId
                 , Assignment.Name
                 , Assignment.IsPublicToProject
@@ -193,10 +193,10 @@ public class AssignmentDataAccess
                 , Assignment.CreatedAt
                 , Assignment.UpdatedAt
                 , Assignment.DeletedAt
-            FROM Assignment 
+            FROM Assignment
             WHERE Assignment.ProjectId = @ProjectId
                 AND Assignment.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("ProjectId", SqlDbType.Int, projectId);
 
@@ -207,7 +207,7 @@ public class AssignmentDataAccess
 
     public IEnumerable<Assignment> Search(string searchValue)
     {
-        string query = @"
+        string query = """
             SELECT Assignment.AssignmentId
                 , Assignment.Name
                 , Assignment.IsPublicToProject
@@ -222,30 +222,38 @@ public class AssignmentDataAccess
                 , Assignment.CreatedAt
                 , Assignment.UpdatedAt
                 , Assignment.DeletedAt
-            FROM Assignment 
+            FROM Assignment
             WHERE
                 (
                     Assignment.AssignmentId LIKE '%' + @SearchValue + '%'
                     OR Assignment.Name LIKE '%' + @SearchValue + '%'
                 )
                 AND Assignment.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
-        parameters.Add("SearchValue", SqlDbType.NVarChar, DatabaseConstants.SEARCH_SIZE, searchValue);
+        parameters.Add(
+            "SearchValue",
+            SqlDbType.NVarChar,
+            DatabaseConstants.SEARCH_SIZE,
+            searchValue
+        );
 
         return DataProvider
             .Instance.ExecuteQuery(query, [.. parameters])
             .MapMany(AssignmentMapper.FromDataRow);
     }
 
-    public IEnumerable<(int AssignmentId, int DocumentCount)> CountDocumentsByAssignmentIds(IEnumerable<int> assignmentIds)
+    public IEnumerable<(
+        int AssignmentId,
+        int DocumentCount
+    )> CountDocumentsByAssignmentIds(IEnumerable<int> assignmentIds)
     {
         if (!assignmentIds.Any())
         {
             return [];
         }
 
-        string query = @"
+        string query = """
             SELECT AssignmentIds.Id             AS [AssignmentId]
                 , Count(Document.AssignmentId)  AS [DocumentCount]
             FROM @AssignmentIds AS AssignmentIds
@@ -253,7 +261,7 @@ public class AssignmentDataAccess
                     ON Document.AssignmentId = AssignmentIds.Id
                     AND Document.IsDeleted = 0
             GROUP BY AssignmentIds.Id
-        ";
+            """;
         List<SqlParameter> parameters = [];
 
         DataTable entityIds = TableParameters.CreateEntityIds(assignmentIds);
@@ -262,15 +270,17 @@ public class AssignmentDataAccess
         return DataProvider
             .Instance.ExecuteQuery(query, [.. parameters])
             .AsEnumerable()
-            .Select(row => (
-                AssignmentId: row.Field<int>("AssignmentId"),
-                DocumentCount: row.Field<int>("DocumentCount")
-            ));
+            .Select(row =>
+                (
+                    AssignmentId: row.Field<int>("AssignmentId"),
+                    DocumentCount: row.Field<int>("DocumentCount")
+                )
+            );
     }
 
     public int Insert(InsertAssignmentModel model)
     {
-        string query = @"
+        string query = """
             INSERT INTO Assignment
             (
                 Name
@@ -295,14 +305,26 @@ public class AssignmentDataAccess
                 , @ProjectId
                 , @StatusId
             )
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("Name", SqlDbType.NVarChar, 50, model.Name);
-        parameters.Add("IsPublicToProject", SqlDbType.Bit, model.IsPublicToProject);
-        parameters.Add("IsPublicToDepartment", SqlDbType.Bit, model.IsPublicToDepartment);
+        parameters.Add(
+            "IsPublicToProject",
+            SqlDbType.Bit,
+            model.IsPublicToProject
+        );
+        parameters.Add(
+            "IsPublicToDepartment",
+            SqlDbType.Bit,
+            model.IsPublicToDepartment
+        );
         parameters.Add("StartDate", SqlDbType.Date, model.StartDate);
         parameters.Add("EndDate", SqlDbType.Date, model.EndDate);
-        parameters.Add("RequiredDocumentCount", SqlDbType.Int, model.RequiredDocumentCount);
+        parameters.Add(
+            "RequiredDocumentCount",
+            SqlDbType.Int,
+            model.RequiredDocumentCount
+        );
         parameters.Add("ManagerId", SqlDbType.Int, model.ManagerId);
         parameters.Add("ProjectId", SqlDbType.Int, model.ProjectId);
         parameters.Add("StatusId", SqlDbType.Int, model.StatusId);
@@ -315,10 +337,18 @@ public class AssignmentDataAccess
         QueryBuildResult result = new SqlUpdateQueryBuilder("Assignment")
             .Set("Name", SqlDbType.NVarChar, 50, model.Name)
             .Set("IsPublicToProject", SqlDbType.Bit, model.IsPublicToProject)
-            .Set("IsPublicToDepartment", SqlDbType.Bit, model.IsPublicToDepartment)
+            .Set(
+                "IsPublicToDepartment",
+                SqlDbType.Bit,
+                model.IsPublicToDepartment
+            )
             .Set("StartDate", SqlDbType.Date, model.StartDate)
             .Set("EndDate", SqlDbType.Date, model.EndDate)
-            .Set("RequiredDocumentCount", SqlDbType.Int, model.RequiredDocumentCount)
+            .Set(
+                "RequiredDocumentCount",
+                SqlDbType.Int,
+                model.RequiredDocumentCount
+            )
             .Set("ManagerId", SqlDbType.Int, model.ManagerId)
             .Set("ProjectId", SqlDbType.Int, model.ProjectId)
             .Set("StatusId", SqlDbType.Int, model.StatusId)
@@ -331,17 +361,20 @@ public class AssignmentDataAccess
             return 0;
         }
 
-        return DataProvider.Instance.ExecuteNonQuery(result.Query, [.. result.Parameters]);
+        return DataProvider.Instance.ExecuteNonQuery(
+            result.Query,
+            [.. result.Parameters]
+        );
     }
 
     public int Delete(int assignmentId)
     {
-        string query = @"
+        string query = """
             UPDATE Assignment
             SET IsDeleted = 1,
                 DeletedAt = GetDate()
             WHERE AssignmentId = @AssignmentId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("AssignmentId", SqlDbType.Int, assignmentId);
 

@@ -1,10 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Contracts;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -22,7 +22,7 @@ public class RoleDataAccess
 
     public Role? GetById(int roleId)
     {
-        string query = @"
+        string query = """
             SELECT Role.RoleId
                 , Role.Name
                 , Role.IsDeleted
@@ -32,7 +32,7 @@ public class RoleDataAccess
             FROM Role
             WHERE Role.RoleId = @RoleId
                 AND Role.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("RoleId", SqlDbType.Int, roleId);
 
@@ -43,7 +43,7 @@ public class RoleDataAccess
 
     public IEnumerable<Role> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Role.RoleId
                 , Role.Name
                 , Role.IsDeleted
@@ -52,7 +52,7 @@ public class RoleDataAccess
                 , Role.DeletedAt
             FROM Role
             WHERE Role.IsDeleted = 0
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
@@ -61,7 +61,7 @@ public class RoleDataAccess
 
     public IEnumerable<Role> Search(string searchValue)
     {
-        string query = @"
+        string query = """
             SELECT Role.RoleId
                 , Role.Name
                 , Role.IsDeleted
@@ -71,9 +71,14 @@ public class RoleDataAccess
             FROM Role
             WHERE Role.Name LIKE '%' + @SearchValue + '%'
                 AND Role.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
-        parameters.Add("SearchValue", SqlDbType.NVarChar, DatabaseConstants.SEARCH_SIZE, searchValue);
+        parameters.Add(
+            "SearchValue",
+            SqlDbType.NVarChar,
+            DatabaseConstants.SEARCH_SIZE,
+            searchValue
+        );
 
         return DataProvider
             .Instance.ExecuteQuery(query, [.. parameters])
@@ -82,7 +87,7 @@ public class RoleDataAccess
 
     public int Insert(InsertRoleModel model)
     {
-        string query = @"
+        string query = """
             INSERT INTO Role
             (
                 Name
@@ -91,7 +96,7 @@ public class RoleDataAccess
             (
                 @Name
             )
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("Name", SqlDbType.NVarChar, 50, model.Name);
 
@@ -111,17 +116,20 @@ public class RoleDataAccess
             return 0;
         }
 
-        return DataProvider.Instance.ExecuteNonQuery(result.Query, [.. result.Parameters]);
+        return DataProvider.Instance.ExecuteNonQuery(
+            result.Query,
+            [.. result.Parameters]
+        );
     }
 
     public int Delete(int roleId)
     {
-        string query = @"
+        string query = """
             UPDATE Role
             SET IsDeleted = 1,
                 DeletedAt = GetDate()
             WHERE RoleId = @RoleId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("RoleId", SqlDbType.Int, roleId);
 

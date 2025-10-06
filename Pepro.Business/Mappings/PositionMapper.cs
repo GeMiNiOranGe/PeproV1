@@ -15,7 +15,9 @@ static class PositionMapper
         };
     }
 
-    public static IEnumerable<PositionDto> ToDtos(this IEnumerable<Position> entities)
+    public static IEnumerable<PositionDto> ToDtos(
+        this IEnumerable<Position> entities
+    )
     {
         return entities.Select(entity => entity.ToDto());
     }

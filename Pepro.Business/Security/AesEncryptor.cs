@@ -7,7 +7,9 @@ namespace Pepro.Business.Security;
 static class AesEncryptor
 {
     private const string _password = "W34kP4ssw0rd@";
-    private static readonly byte[] _salt = Encoding.UTF8.GetBytes("SecuritySalt");
+    private static readonly byte[] _salt = Encoding.UTF8.GetBytes(
+        "SecuritySalt"
+    );
     private const int _iter = 10000;
     private static readonly HashAlgorithmName _hash = HashAlgorithmName.SHA256;
     private const int _keySize = 32;

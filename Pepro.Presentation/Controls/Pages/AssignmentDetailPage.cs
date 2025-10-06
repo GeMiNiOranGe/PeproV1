@@ -1,9 +1,9 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Molecules;
 using Pepro.Presentation.Controls.Templates;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Pages;
 
@@ -48,7 +48,9 @@ public partial class AssignmentDetailPage : MediatedTemplate
 
         List<AssignmentProgressView> assignmentsProgress =
         [
-            .. AssignmentBusiness.Instance.GetAssignmentProgressViewsByProjectId(ProjectId)
+            .. AssignmentBusiness.Instance.GetAssignmentProgressViewsByProjectId(
+                ProjectId
+            ),
         ];
 
         for (int i = 0; i < assignmentsProgress.Count; i++)
@@ -58,13 +60,18 @@ public partial class AssignmentDetailPage : MediatedTemplate
             AssignmentProgressCard assignmentCard = new()
             {
                 Item = item,
-                Margin = i != assignmentsProgress.Count - 1 ? new Padding(0, 0, 0, 8) : new Padding(0),
-                Width = assignmentsOfProjectFlowLayoutPanel.ClientSize.Width - assignmentsOfProjectFlowLayoutPanel.Padding.Horizontal,
+                Margin =
+                    i != assignmentsProgress.Count - 1
+                        ? new Padding(0, 0, 0, 8)
+                        : new Padding(0),
+                Width =
+                    assignmentsOfProjectFlowLayoutPanel.ClientSize.Width
+                    - assignmentsOfProjectFlowLayoutPanel.Padding.Horizontal,
                 Cursor = Cursors.Hand,
                 ForeColor = ThemeColors.Text,
                 BackColor = Color.FromArgb(29, 29, 29),
                 MouseOverBackColor = ThemeColors.Accent.Base,
-                MouseDownBackColor = ThemeColors.Accent.Dark
+                MouseDownBackColor = ThemeColors.Accent.Dark,
             };
 
             assignmentCard.Click += (sender, e) =>
@@ -83,7 +90,8 @@ public partial class AssignmentDetailPage : MediatedTemplate
             otherAssignmentsOfManagerFlowLayoutLabel.Controls.Clear();
         }
 
-        EmployeeDto? employee = AssignmentBusiness.Instance.GetAssignmentManager(assignmentId);
+        EmployeeDto? employee =
+            AssignmentBusiness.Instance.GetAssignmentManager(assignmentId);
         if (employee == null)
         {
             MessageBox.Show("Assignment manager not found");
@@ -94,7 +102,9 @@ public partial class AssignmentDetailPage : MediatedTemplate
 
         List<AssignmentProgressView> assignmentsProgress =
         [
-            .. AssignmentBusiness.Instance.GetAssignmentProgressViewsByEmployeeId(employee.EmployeeId)
+            .. AssignmentBusiness.Instance.GetAssignmentProgressViewsByEmployeeId(
+                employee.EmployeeId
+            ),
         ];
 
         for (int i = 0; i < assignmentsProgress.Count; i++)
@@ -104,15 +114,24 @@ public partial class AssignmentDetailPage : MediatedTemplate
             AssignmentProgressCard assignmentCard = new()
             {
                 Item = item,
-                Margin = i != assignmentsProgress.Count - 1 ? new Padding(0, 0, 0, 8) : new Padding(0),
-                Width = otherAssignmentsOfManagerFlowLayoutLabel.ClientSize.Width - otherAssignmentsOfManagerFlowLayoutLabel.Padding.Horizontal,
+                Margin =
+                    i != assignmentsProgress.Count - 1
+                        ? new Padding(0, 0, 0, 8)
+                        : new Padding(0),
+                Width =
+                    otherAssignmentsOfManagerFlowLayoutLabel.ClientSize.Width
+                    - otherAssignmentsOfManagerFlowLayoutLabel
+                        .Padding
+                        .Horizontal,
                 ForeColor = ThemeColors.Text,
                 BackColor = Color.FromArgb(29, 29, 29),
                 MouseOverBackColor = ThemeColors.Accent.Base,
-                MouseDownBackColor = ThemeColors.Accent.Dark
+                MouseDownBackColor = ThemeColors.Accent.Dark,
             };
 
-            otherAssignmentsOfManagerFlowLayoutLabel.Controls.Add(assignmentCard);
+            otherAssignmentsOfManagerFlowLayoutLabel.Controls.Add(
+                assignmentCard
+            );
         }
     }
 }

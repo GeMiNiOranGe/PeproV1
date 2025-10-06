@@ -1,8 +1,8 @@
-﻿using Pepro.Presentation.Controls.Atoms;
+﻿using System.ComponentModel;
+using Pepro.Presentation.Controls.Atoms;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Interfaces;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Templates;
 

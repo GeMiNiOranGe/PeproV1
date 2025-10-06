@@ -1,15 +1,17 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
 using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Interfaces;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Pages;
 
-public partial class ProjectEditorPage : EditorTemplate, IEditorUserControl<ProjectDto>
+public partial class ProjectEditorPage
+    : EditorTemplate,
+        IEditorUserControl<ProjectDto>
 {
     private ProjectDto _item = null!;
     private EditorMode _mode;
@@ -46,7 +48,11 @@ public partial class ProjectEditorPage : EditorTemplate, IEditorUserControl<Proj
             {
                 EditorMode.Create => "Create a new project",
                 EditorMode.Edit => "Edit project",
-                _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+                _ => throw new InvalidEnumArgumentException(
+                    nameof(Mode),
+                    (int)_mode,
+                    typeof(EditorMode)
+                ),
             };
         }
     }
@@ -142,9 +148,15 @@ public partial class ProjectEditorPage : EditorTemplate, IEditorUserControl<Proj
 
         int result = _mode switch
         {
-            EditorMode.Create => ProjectBusiness.Instance.InsertProject(project),
+            EditorMode.Create => ProjectBusiness.Instance.InsertProject(
+                project
+            ),
             EditorMode.Edit => ProjectBusiness.Instance.UpdateProject(project),
-            _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+            _ => throw new InvalidEnumArgumentException(
+                nameof(Mode),
+                (int)_mode,
+                typeof(EditorMode)
+            ),
         };
 
         if (result > 0)

@@ -1,15 +1,17 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
 using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Interfaces;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Pages;
 
-public partial class RoleEditorPage : EditorTemplate, IEditorUserControl<RoleDto>
+public partial class RoleEditorPage
+    : EditorTemplate,
+        IEditorUserControl<RoleDto>
 {
     private RoleDto _item = null!;
     private EditorMode _mode;
@@ -43,7 +45,11 @@ public partial class RoleEditorPage : EditorTemplate, IEditorUserControl<RoleDto
             {
                 EditorMode.Create => "Create a new role",
                 EditorMode.Edit => "Edit role",
-                _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+                _ => throw new InvalidEnumArgumentException(
+                    nameof(Mode),
+                    (int)_mode,
+                    typeof(EditorMode)
+                ),
             };
         }
     }
@@ -101,7 +107,11 @@ public partial class RoleEditorPage : EditorTemplate, IEditorUserControl<RoleDto
         {
             EditorMode.Create => RoleBusiness.Instance.InsertRole(project),
             EditorMode.Edit => RoleBusiness.Instance.UpdateRole(project),
-            _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+            _ => throw new InvalidEnumArgumentException(
+                nameof(Mode),
+                (int)_mode,
+                typeof(EditorMode)
+            ),
         };
 
         if (result > 0)

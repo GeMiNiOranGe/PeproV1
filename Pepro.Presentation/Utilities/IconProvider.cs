@@ -4,9 +4,21 @@ namespace Pepro.Presentation.Utilities;
 
 public static class IconProvider
 {
-    private static readonly string _iconFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Icons");
-    private static readonly string _imageFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Images");
-    private static readonly string _logoFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Logos");
+    private static readonly string _iconFolderPath = Path.Combine(
+        AppDomain.CurrentDomain.BaseDirectory,
+        "Assets",
+        "Icons"
+    );
+    private static readonly string _imageFolderPath = Path.Combine(
+        AppDomain.CurrentDomain.BaseDirectory,
+        "Assets",
+        "Images"
+    );
+    private static readonly string _logoFolderPath = Path.Combine(
+        AppDomain.CurrentDomain.BaseDirectory,
+        "Assets",
+        "Logos"
+    );
     private static readonly Dictionary<string, SvgDocument> _cache = [];
 
     private static void ProcessNodes(
@@ -93,7 +105,11 @@ public static class IconProvider
         return svgDoc.Draw();
     }
 
-    public static Image GetImage(string name, string frameName = "frame", Color? frameColor = null)
+    public static Image GetImage(
+        string name,
+        string frameName = "frame",
+        Color? frameColor = null
+    )
     {
         string imageName = $"{name}.svg";
         string imagePath = Path.Combine(_imageFolderPath, imageName);
@@ -109,7 +125,9 @@ public static class IconProvider
 
             if (frameColor.HasValue)
             {
-                SvgPaintServer paintServer = new SvgColourServer(frameColor.Value);
+                SvgPaintServer paintServer = new SvgColourServer(
+                    frameColor.Value
+                );
                 SvgElement frame = svgDoc.GetElementById(frameName);
                 frame.Fill = paintServer;
             }

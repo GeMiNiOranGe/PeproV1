@@ -1,6 +1,6 @@
-﻿using Pepro.Business.Contracts;
+﻿using System.ComponentModel;
+using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Molecules;
 
@@ -15,18 +15,10 @@ public partial class ProjectProgressCard : CardTemplate
     }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Color MouseOverBackColor
-    {
-        get;
-        set;
-    }
+    public Color MouseOverBackColor { get; set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Color MouseDownBackColor
-    {
-        get;
-        set;
-    }
+    public Color MouseDownBackColor { get; set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ProjectProgressView Item
@@ -41,18 +33,27 @@ public partial class ProjectProgressCard : CardTemplate
         }
     }
 
-    private void ProjectProgressCardControl_MouseEnter(object sender, EventArgs e)
+    private void ProjectProgressCardControl_MouseEnter(
+        object sender,
+        EventArgs e
+    )
     {
         _defaultBackColor = BackColor;
         BackColor = MouseOverBackColor;
     }
 
-    private void ProjectProgressCardControl_MouseLeave(object sender, EventArgs e)
+    private void ProjectProgressCardControl_MouseLeave(
+        object sender,
+        EventArgs e
+    )
     {
         BackColor = _defaultBackColor;
     }
 
-    private void ProjectProgressCardControl_MouseDown(object sender, MouseEventArgs e)
+    private void ProjectProgressCardControl_MouseDown(
+        object sender,
+        MouseEventArgs e
+    )
     {
         BackColor = MouseDownBackColor;
     }

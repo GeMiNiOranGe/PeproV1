@@ -1,10 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Contracts;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -22,7 +22,7 @@ public class ProjectDataAccess
 
     public Project? GetById(int projectId)
     {
-        string query = @"
+        string query = """
             SELECT Project.ProjectId
                 , Project.Name
                 , Project.CustomerName
@@ -37,7 +37,7 @@ public class ProjectDataAccess
             FROM Project
             WHERE Project.ProjectId = @ProjectId
                 AND Project.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("ProjectId", SqlDbType.Int, projectId);
 
@@ -48,7 +48,7 @@ public class ProjectDataAccess
 
     public Project? GetByAssignmentId(int assignmentId)
     {
-        string query = @"
+        string query = """
             SELECT Project.ProjectId
                 , Project.Name
                 , Project.CustomerName
@@ -65,7 +65,7 @@ public class ProjectDataAccess
                     ON Assignment.ProjectId = Project.ProjectId
             WHERE Assignment.AssignmentId = @AssignmentId
                 AND Project.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("AssignmentId", SqlDbType.Int, assignmentId);
 
@@ -82,7 +82,7 @@ public class ProjectDataAccess
     /// </returns>
     public IEnumerable<Project> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Project.ProjectId
                 , Project.Name
                 , Project.CustomerName
@@ -96,7 +96,7 @@ public class ProjectDataAccess
                 , Project.DeletedAt
             FROM Project
             WHERE Project.IsDeleted = 0
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
@@ -110,7 +110,7 @@ public class ProjectDataAccess
             return [];
         }
 
-        string query = @"
+        string query = """
             SELECT Project.ProjectId
                 , Project.Name
                 , Project.CustomerName
@@ -126,7 +126,7 @@ public class ProjectDataAccess
             INNER JOIN @ProjectIds AS ProjectIds
                     ON ProjectIds.Id = Project.ProjectId
             WHERE Project.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
 
         DataTable entityIds = TableParameters.CreateEntityIds(projectIds);
@@ -139,7 +139,7 @@ public class ProjectDataAccess
 
     public IEnumerable<Project> GetManyByEmployeeId(int employeeId)
     {
-        string query = @"
+        string query = """
             SELECT DISTINCT Project.ProjectId
                 , Project.Name
                 , Project.CustomerName
@@ -158,7 +158,7 @@ public class ProjectDataAccess
                     ON AssignmentDetail.AssignmentId = Assignment.AssignmentId
             WHERE AssignmentDetail.EmployeeId = @EmployeeId
                 AND Project.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("EmployeeId", SqlDbType.Int, employeeId);
 
@@ -169,7 +169,7 @@ public class ProjectDataAccess
 
     public IEnumerable<Project> Search(string searchValue)
     {
-        string query = @"
+        string query = """
             SELECT Project.ProjectId
                 , Project.Name
                 , Project.CustomerName
@@ -189,9 +189,14 @@ public class ProjectDataAccess
                     OR Project.CustomerName LIKE '%' + @SearchValue + '%'
                 )
                 AND Project.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
-        parameters.Add("SearchValue", SqlDbType.NVarChar, DatabaseConstants.SEARCH_SIZE, searchValue);
+        parameters.Add(
+            "SearchValue",
+            SqlDbType.NVarChar,
+            DatabaseConstants.SEARCH_SIZE,
+            searchValue
+        );
 
         return DataProvider
             .Instance.ExecuteQuery(query, [.. parameters])
@@ -200,7 +205,7 @@ public class ProjectDataAccess
 
     public int Insert(InsertProjectModel model)
     {
-        string query = @"
+        string query = """
             INSERT INTO Project
             (
                 Name
@@ -219,10 +224,15 @@ public class ProjectDataAccess
                 , @EndDate
                 , @StatusId
             )
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("Name", SqlDbType.NVarChar, 50, model.Name);
-        parameters.Add("CustomerName", SqlDbType.NVarChar, 50, model.CustomerName);
+        parameters.Add(
+            "CustomerName",
+            SqlDbType.NVarChar,
+            50,
+            model.CustomerName
+        );
         parameters.Add("ManagerId", SqlDbType.Int, model.ManagerId);
         parameters.Add("StartDate", SqlDbType.Date, model.StartDate);
         parameters.Add("EndDate", SqlDbType.Date, model.EndDate);
@@ -249,17 +259,20 @@ public class ProjectDataAccess
             return 0;
         }
 
-        return DataProvider.Instance.ExecuteNonQuery(result.Query, [.. result.Parameters]);
+        return DataProvider.Instance.ExecuteNonQuery(
+            result.Query,
+            [.. result.Parameters]
+        );
     }
 
     public int Delete(int projectId)
     {
-        string query = @"
+        string query = """
             UPDATE Project
             SET IsDeleted = 1,
                 DeletedAt = GetDate()
             WHERE ProjectId = @ProjectId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("ProjectId", SqlDbType.Int, projectId);
 

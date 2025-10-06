@@ -38,7 +38,10 @@ public partial class AssignmentPage : CrudTemplate
         LoadAssignments();
     }
 
-    private void AssignmentDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void AssignmentDataGridView_CellClick(
+        object sender,
+        DataGridViewCellEventArgs e
+    )
     {
         BindDataGridViewCellClick<AssignmentDto>((DataGridView)sender, e);
     }
@@ -79,7 +82,8 @@ public partial class AssignmentPage : CrudTemplate
     {
         BindDeleteButtonClick<AssignmentDto>(
             assignmentDataGridView,
-            (item) => AssignmentBusiness.Instance.DeleteAssignment(item.AssignmentId),
+            (item) =>
+                AssignmentBusiness.Instance.DeleteAssignment(item.AssignmentId),
             LoadAssignments
         );
     }

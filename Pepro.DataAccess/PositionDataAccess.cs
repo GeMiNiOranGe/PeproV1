@@ -1,9 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -21,7 +21,7 @@ public class PositionDataAccess
 
     public Position? GetByEmployeeId(int employeeId)
     {
-        string query = @"
+        string query = """
             SELECT Position.PositionId
                 , Position.Title
                 , Position.AllowancePercent
@@ -29,7 +29,7 @@ public class PositionDataAccess
             INNER JOIN Employee
                     ON Employee.PositionId = Position.PositionId
             WHERE Employee.EmployeeId = @EmployeeId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("EmployeeId", SqlDbType.Int, employeeId);
 
@@ -40,12 +40,12 @@ public class PositionDataAccess
 
     public IEnumerable<Position> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Position.PositionId
                 , Position.Title
                 , Position.AllowancePercent
             FROM Position
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
@@ -59,14 +59,14 @@ public class PositionDataAccess
             return [];
         }
 
-        string query = @"
+        string query = """
             SELECT Position.PositionId
                 , Position.Title
                 , Position.AllowancePercent
             FROM Position
             INNER JOIN @PositionIds AS PositionIds
                     ON PositionIds.Id = Position.PositionId
-        ";
+            """;
         List<SqlParameter> parameters = [];
 
         DataTable entityIds = TableParameters.CreateEntityIds(positionIds);

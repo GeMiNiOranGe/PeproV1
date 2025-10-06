@@ -5,7 +5,8 @@ namespace Pepro.Presentation.Controls.Atoms;
 
 public class PeproUserControl : UserControl
 {
-    public PeproUserControl() : base()
+    public PeproUserControl()
+        : base()
     {
         Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
     }

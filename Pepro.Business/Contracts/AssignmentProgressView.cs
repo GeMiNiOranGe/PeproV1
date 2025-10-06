@@ -1,6 +1,6 @@
 ﻿namespace Pepro.Business.Contracts;
 
-public class AssignmentProgressView : AssignmentDto 
+public class AssignmentProgressView : AssignmentDto
 {
     private decimal _progressPercent;
 

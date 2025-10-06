@@ -1,6 +1,6 @@
-﻿using Pepro.Business.Contracts;
+﻿using System.ComponentModel;
+using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Molecules;
 
@@ -15,18 +15,10 @@ public partial class AssignmentProgressCard : CardTemplate
     }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Color MouseOverBackColor
-    {
-        get;
-        set;
-    }
+    public Color MouseOverBackColor { get; set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Color MouseDownBackColor
-    {
-        get;
-        set;
-    }
+    public Color MouseDownBackColor { get; set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public AssignmentProgressView Item
@@ -37,27 +29,40 @@ public partial class AssignmentProgressCard : CardTemplate
             _item = value ?? throw new ArgumentNullException(nameof(Item));
             assignmentIdLabel.Text = _item.AssignmentId.ToString();
             assignmentNameLabel.Text = _item.Name;
-            assignmentPercentLabel.Text = _item.ProgressPercent.ToString() + "%";
+            assignmentPercentLabel.Text =
+                _item.ProgressPercent.ToString() + "%";
         }
     }
 
-    private void AssignmentProgressCardControl_MouseEnter(object sender, EventArgs e)
+    private void AssignmentProgressCardControl_MouseEnter(
+        object sender,
+        EventArgs e
+    )
     {
         _defaultBackColor = BackColor;
         BackColor = MouseOverBackColor;
     }
 
-    private void AssignmentProgressCardControl_MouseLeave(object sender, EventArgs e)
+    private void AssignmentProgressCardControl_MouseLeave(
+        object sender,
+        EventArgs e
+    )
     {
         BackColor = _defaultBackColor;
     }
 
-    private void AssignmentProgressCardControl_MouseDown(object sender, MouseEventArgs e)
+    private void AssignmentProgressCardControl_MouseDown(
+        object sender,
+        MouseEventArgs e
+    )
     {
         BackColor = MouseDownBackColor;
     }
 
-    private void AssignmentProgressCardControl_MouseUp(object sender, MouseEventArgs e)
+    private void AssignmentProgressCardControl_MouseUp(
+        object sender,
+        MouseEventArgs e
+    )
     {
         BackColor = MouseOverBackColor;
     }

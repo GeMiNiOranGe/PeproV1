@@ -28,11 +28,7 @@ public partial class PasswordField : InputFieldTemplate
     [Category("Appearance")]
     [DefaultValue(typeof(Color), "Gray")]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Color FocusColor
-    {
-        get;
-        set;
-    }
+    public Color FocusColor { get; set; }
 
     [AllowNull]
     [DefaultValue("")]
@@ -68,14 +64,12 @@ public partial class PasswordField : InputFieldTemplate
     }
 
     [Category("Appearance")]
-    [Description("The image displayed when the toggle password button is pressed.")]
+    [Description(
+        "The image displayed when the toggle password button is pressed."
+    )]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(null)]
-    public Image? TogglePasswordPressedImage
-    {
-        get;
-        set;
-    }
+    public Image? TogglePasswordPressedImage { get; set; }
 
     /// <summary>
     ///     Clears all text from the text box control.
@@ -85,7 +79,13 @@ public partial class PasswordField : InputFieldTemplate
         textBoxField.Clear();
     }
 
-    protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
+    protected override void SetBoundsCore(
+        int x,
+        int y,
+        int width,
+        int height,
+        BoundsSpecified specified
+    )
     {
         base.SetBoundsCore(x, y, width, DefaultSize.Height, specified);
     }

@@ -37,7 +37,10 @@ public partial class AccountPage : CrudTemplate
         LoadAccounts();
     }
 
-    private void AccountDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void AccountDataGridView_CellClick(
+        object sender,
+        DataGridViewCellEventArgs e
+    )
     {
         BindDataGridViewCellClick<AccountDto>(
             (DataGridView)sender,
@@ -75,7 +78,8 @@ public partial class AccountPage : CrudTemplate
             return;
         }
 
-        int numberOfRowsAffected = AccountBusiness.Instance.ResetPasswordAccount(item.AccountId);
+        int numberOfRowsAffected =
+            AccountBusiness.Instance.ResetPasswordAccount(item.AccountId);
         MessageBoxWrapper.ShowInformation(
             "ResetPasswordSuccess",
             numberOfRowsAffected
@@ -95,7 +99,9 @@ public partial class AccountPage : CrudTemplate
             return;
         }
 
-        int numberOfRowsAffected = AccountBusiness.Instance.ToggleActiveAccount(item.AccountId);
+        int numberOfRowsAffected = AccountBusiness.Instance.ToggleActiveAccount(
+            item.AccountId
+        );
         MessageBoxWrapper.ShowInformation(
             item.IsActive ? "LockSuccess" : "UnlockSuccess",
             numberOfRowsAffected

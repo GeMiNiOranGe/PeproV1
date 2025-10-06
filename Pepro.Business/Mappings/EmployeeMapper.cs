@@ -42,7 +42,9 @@ static class EmployeeMapper
         };
     }
 
-    public static IEnumerable<EmployeeDto> ToDtos(this IEnumerable<Employee> entities)
+    public static IEnumerable<EmployeeDto> ToDtos(
+        this IEnumerable<Employee> entities
+    )
     {
         return entities.Select(entity => entity.ToDto());
     }

@@ -23,7 +23,9 @@ static class DocumentMapper
         };
     }
 
-    public static IEnumerable<DocumentDto> ToDtos(this IEnumerable<Document> entities)
+    public static IEnumerable<DocumentDto> ToDtos(
+        this IEnumerable<Document> entities
+    )
     {
         return entities.Select(entity => entity.ToDto());
     }

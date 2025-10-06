@@ -14,7 +14,9 @@ static class StatusMapper
         };
     }
 
-    public static IEnumerable<StatusDto> ToDtos(this IEnumerable<Status> entities)
+    public static IEnumerable<StatusDto> ToDtos(
+        this IEnumerable<Status> entities
+    )
     {
         return entities.Select(entity => entity.ToDto());
     }

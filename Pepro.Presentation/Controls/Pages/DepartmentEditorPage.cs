@@ -1,17 +1,17 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
 using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Interfaces;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Pages;
 
 public partial class DepartmentEditorPage
     : EditorTemplate,
-    IEditorUserControl<DepartmentDto>
+        IEditorUserControl<DepartmentDto>
 {
     private DepartmentDto _item = null!;
     private EditorMode _mode;
@@ -122,8 +122,12 @@ public partial class DepartmentEditorPage
 
         int result = _mode switch
         {
-            EditorMode.Create => DepartmentBusiness.Instance.InsertDepartment(department),
-            EditorMode.Edit => DepartmentBusiness.Instance.UpdateDepartment(department),
+            EditorMode.Create => DepartmentBusiness.Instance.InsertDepartment(
+                department
+            ),
+            EditorMode.Edit => DepartmentBusiness.Instance.UpdateDepartment(
+                department
+            ),
             _ => throw new InvalidEnumArgumentException(
                 nameof(Mode),
                 (int)_mode,

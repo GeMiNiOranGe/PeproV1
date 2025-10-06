@@ -42,11 +42,12 @@ public class EmployeeDto
     {
         get
         {
-            return string.Join(" ", new[] {
-                _lastName,
-                _middleName,
-                _firstName,
-            }.Where(s => !string.IsNullOrWhiteSpace(s)));
+            return string.Join(
+                " ",
+                new[] { _lastName, _middleName, _firstName }.Where(s =>
+                    !string.IsNullOrWhiteSpace(s)
+                )
+            );
         }
     }
 

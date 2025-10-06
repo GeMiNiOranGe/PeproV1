@@ -84,11 +84,11 @@ class SqlUpdateQueryBuilder(string tableName)
         }
 
         _setClauses.AddRange(_setDirectClauses);
-        string query = $@"
+        string query = $"""
             UPDATE {_tableName}
             SET {string.Join(", ", _setClauses)}
             WHERE {string.Join(", ", _whereClauses)}
-        ";
+            """;
 
         return new(query, _parameters);
     }

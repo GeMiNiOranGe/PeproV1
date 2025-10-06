@@ -8,19 +8,12 @@ static class RoleMapper
 {
     public static InsertRoleModel ToInsertModel(this RoleDto dto)
     {
-        return new InsertRoleModel()
-        {
-            Name = dto.Name,
-        };
+        return new InsertRoleModel() { Name = dto.Name };
     }
 
     public static RoleDto ToDto(this Role entity)
     {
-        return new RoleDto()
-        {
-            RoleId = entity.RoleId,
-            Name = entity.Name,
-        };
+        return new RoleDto() { RoleId = entity.RoleId, Name = entity.Name };
     }
 
     public static IEnumerable<RoleDto> ToDtos(this IEnumerable<Role> entities)

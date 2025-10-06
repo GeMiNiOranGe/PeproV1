@@ -5,7 +5,8 @@ namespace Pepro.DataAccess.Utilities;
 
 internal class DataProvider
 {
-    private const string CONNECTION_STRING = @"Data Source=.;Initial Catalog=Pepro;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+    private const string CONNECTION_STRING =
+        @"Data Source=.;Initial Catalog=Pepro;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
     private static DataProvider? _instance;
 

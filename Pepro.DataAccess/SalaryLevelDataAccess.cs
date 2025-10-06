@@ -1,9 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -19,14 +19,16 @@ public class SalaryLevelDataAccess
 
     private SalaryLevelDataAccess() { }
 
-    public IEnumerable<SalaryLevel> GetManyByIds(IEnumerable<int> salaryLevelIds)
+    public IEnumerable<SalaryLevel> GetManyByIds(
+        IEnumerable<int> salaryLevelIds
+    )
     {
         if (salaryLevelIds == null || !salaryLevelIds.Any())
         {
             return [];
         }
 
-        string query = @"
+        string query = """
             SELECT SalaryLevel.SalaryLevelId
                 , SalaryLevel.Level
                 , SalaryLevel.Coefficient
@@ -34,7 +36,7 @@ public class SalaryLevelDataAccess
             FROM SalaryLevel
             INNER JOIN @SalaryLevelIds AS SalaryLevelIds
                     ON SalaryLevelIds.Id = SalaryLevel.SalaryLevelId
-        ";
+            """;
         List<SqlParameter> parameters = [];
 
         DataTable entityIds = TableParameters.CreateEntityIds(salaryLevelIds);
@@ -47,14 +49,14 @@ public class SalaryLevelDataAccess
 
     public IEnumerable<SalaryLevel> GetManyBySalaryScaleId(int salaryScaleId)
     {
-        string query = @"
+        string query = """
             SELECT SalaryLevel.SalaryLevelId
                 , SalaryLevel.Level
                 , SalaryLevel.Coefficient
                 , SalaryLevel.SalaryScaleId
             FROM SalaryLevel
             WHERE SalaryLevel.SalaryScaleId = @SalaryScaleId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("SalaryScaleId", SqlDbType.Int, salaryScaleId);
 

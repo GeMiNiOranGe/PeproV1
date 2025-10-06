@@ -27,9 +27,7 @@ public partial class RolePage : CrudTemplate
 
     private void LoadRoles()
     {
-        roleDataGridView.DataSource = RoleBusiness
-            .Instance.GetRoles()
-            .ToList();
+        roleDataGridView.DataSource = RoleBusiness.Instance.GetRoles().ToList();
     }
 
     private void RolePage_Load(object sender, EventArgs e)
@@ -37,7 +35,10 @@ public partial class RolePage : CrudTemplate
         LoadRoles();
     }
 
-    private void RoleDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void RoleDataGridView_CellClick(
+        object sender,
+        DataGridViewCellEventArgs e
+    )
     {
         BindDataGridViewCellClick<RoleDto>((DataGridView)sender, e);
     }

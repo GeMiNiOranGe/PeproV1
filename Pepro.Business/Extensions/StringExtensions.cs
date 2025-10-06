@@ -11,7 +11,10 @@ public static class StringExtensions
             return "";
         }
 
-        string[] words = message.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+        string[] words = message.Split(
+            " ",
+            StringSplitOptions.RemoveEmptyEntries
+        );
 
         StringBuilder initials = new();
         foreach (string word in words)

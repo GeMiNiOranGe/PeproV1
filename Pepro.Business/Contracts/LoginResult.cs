@@ -10,9 +10,5 @@ public class LoginResult
         set => _employeeId = value;
     }
 
-    public LoginStatus Status
-    {
-        get;
-        set;
-    }
+    public LoginStatus Status { get; set; }
 }

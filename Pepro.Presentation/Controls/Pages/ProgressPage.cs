@@ -15,7 +15,8 @@ public partial class ProgressPage : MediatedTemplate
 
     private void ProgressPage_Load(object sender, EventArgs e)
     {
-        projectProgressList.Data = ProjectBusiness.Instance.GetProjectProgressViews();
+        projectProgressList.Data =
+            ProjectBusiness.Instance.GetProjectProgressViews();
     }
 
     private void ProjectsFlowLayoutPanel_OnItemClick(
@@ -29,7 +30,7 @@ public partial class ProgressPage : MediatedTemplate
             new AssignmentDetailPagePayload()
             {
                 ProjectId = item.ProjectId,
-                ProjectName = item.Name
+                ProjectName = item.Name,
             }
         );
     }

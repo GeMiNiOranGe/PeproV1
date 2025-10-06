@@ -1,7 +1,7 @@
-﻿using Pepro.Business.Contracts;
+﻿using System.Globalization;
+using Pepro.Business.Contracts;
 using Pepro.DataAccess;
 using Pepro.DataAccess.Entities;
-using System.Globalization;
 
 namespace Pepro.Business;
 
@@ -21,7 +21,8 @@ public class SalaryBusiness
 
     public IEnumerable<Salary> GetPayroll()
     {
-        IEnumerable<EmployeeDto> employees = EmployeeBusiness.Instance.GetEmployees();
+        IEnumerable<EmployeeDto> employees =
+            EmployeeBusiness.Instance.GetEmployees();
 
         IEnumerable<int> salaryLevelIds = employees
             .Select(employee => employee.SalaryLevelId)
@@ -75,7 +76,8 @@ public class SalaryBusiness
             positions.TryGetValue(employee.PositionId, out Position? position);
 
             decimal basicSalary = salaryLevel?.Coefficient * BASE_SALARY ?? 0;
-            decimal positionAllowance = position?.AllowancePercent * basicSalary ?? 0;
+            decimal positionAllowance =
+                position?.AllowancePercent * basicSalary ?? 0;
             decimal grossSalary = basicSalary + positionAllowance;
 
             IFormatProvider format = CultureInfo.CreateSpecificCulture("vi-VN");
@@ -85,9 +87,11 @@ public class SalaryBusiness
                 SalaryScaleName = salaryScale?.Name ?? "",
                 SalaryScaleGroup = salaryScale?.Group ?? "",
                 SalaryLevel = salaryLevel?.Level ?? "",
-                SalaryLevelCoefficient = salaryLevel?.Coefficient.ToString("0.00") ?? "",
+                SalaryLevelCoefficient =
+                    salaryLevel?.Coefficient.ToString("0.00") ?? "",
                 BasicSalary = basicSalary.ToString("C", format),
-                PositionAllowancePercent = position?.AllowancePercent.ToString("00.00%") ?? "",
+                PositionAllowancePercent =
+                    position?.AllowancePercent.ToString("00.00%") ?? "",
                 PositionAllowance = positionAllowance.ToString("C", format),
                 GrossSalary = grossSalary.ToString("C", format),
             };

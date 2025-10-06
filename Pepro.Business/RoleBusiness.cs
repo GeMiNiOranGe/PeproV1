@@ -17,7 +17,7 @@ public class RoleBusiness
     }
 
     private RoleBusiness() { }
-    
+
     public IEnumerable<RoleDto> GetRoles()
     {
         IEnumerable<Role> roles = RoleDataAccess.Instance.GetMany();

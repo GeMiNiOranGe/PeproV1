@@ -21,7 +21,7 @@ public class PermissionDataAccess
 
     public IEnumerable<Permission> GetManyByAccountId(int accountId)
     {
-        string query = @"
+        string query = """
             SELECT DISTINCT Permission.PermissionId
                 , Permission.[Key]
             FROM Permission
@@ -35,7 +35,7 @@ public class PermissionDataAccess
                     ON Account.AccountId = AccountRole.AccountId
             WHERE Account.AccountId = @AccountId
                 AND [Role].IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("AccountId", SqlDbType.Int, accountId);
 

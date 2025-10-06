@@ -1,4 +1,5 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Molecules;
 using Pepro.Presentation.Controls.Templates;
@@ -6,11 +7,12 @@ using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Interfaces;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Pages;
 
-public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<EmployeeDto>
+public partial class EmployeeEditorPage
+    : EditorTemplate,
+        IEditorUserControl<EmployeeDto>
 {
     private EmployeeDto _item = null!;
     private EditorMode _mode;
@@ -83,16 +85,22 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
         }
 
         departmentComboBoxField.DisplayMember = nameof(DepartmentDto.Name);
-        departmentComboBoxField.ValueMember = nameof(DepartmentDto.DepartmentId);
+        departmentComboBoxField.ValueMember = nameof(
+            DepartmentDto.DepartmentId
+        );
 
         positionComboBoxField.DisplayMember = nameof(PositionDto.Title);
         positionComboBoxField.ValueMember = nameof(PositionDto.PositionId);
 
         salaryScaleComboBoxField.DisplayMember = nameof(SalaryScaleDto.Name);
-        salaryScaleComboBoxField.ValueMember = nameof(SalaryScaleDto.SalaryScaleId);
+        salaryScaleComboBoxField.ValueMember = nameof(
+            SalaryScaleDto.SalaryScaleId
+        );
 
         salaryLevelComboBoxField.DisplayMember = nameof(SalaryLevelDto.Level);
-        salaryLevelComboBoxField.ValueMember = nameof(SalaryLevelDto.SalaryLevelId);
+        salaryLevelComboBoxField.ValueMember = nameof(
+            SalaryLevelDto.SalaryLevelId
+        );
 
         departmentComboBoxField.DataSource = DepartmentBusiness
             .Instance.GetDepartments()
@@ -129,9 +137,10 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
         salaryScaleComboBoxField.ExecuteWithoutEvent(
             nameof(ComboBoxField.SelectedIndexChanged),
             SalaryScaleComboBoxField_SelectedIndexChanged,
-            () => salaryScaleComboBoxField.DataSource = SalaryScaleBusiness
-                .Instance.GetSalaryScales()
-                .ToList()
+            () =>
+                salaryScaleComboBoxField.DataSource = SalaryScaleBusiness
+                    .Instance.GetSalaryScales()
+                    .ToList()
         );
 
         departmentComboBoxField.SelectedIndex = -1;
@@ -151,9 +160,10 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
         departmentComboBoxField.SelectedValue = _item.DepartmentId;
         positionComboBoxField.SelectedValue = _item.PositionId;
 
-        SalaryScaleDto? salaryScale = SalaryScaleBusiness.Instance.GetSalaryScaleBySalaryLevelId(
-            _item.SalaryLevelId
-        );
+        SalaryScaleDto? salaryScale =
+            SalaryScaleBusiness.Instance.GetSalaryScaleBySalaryLevelId(
+                _item.SalaryLevelId
+            );
         if (salaryScale != null)
         {
             salaryScaleComboBoxField.SelectedValue = salaryScale.SalaryScaleId;
@@ -161,7 +171,10 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
         salaryLevelComboBoxField.SelectedValue = _item.SalaryLevelId;
     }
 
-    private void SalaryScaleComboBoxField_SelectedIndexChanged(object? sender, EventArgs e)
+    private void SalaryScaleComboBoxField_SelectedIndexChanged(
+        object? sender,
+        EventArgs e
+    )
     {
         if (salaryScaleComboBoxField.SelectedItem is not SalaryScaleDto dto)
         {
@@ -176,7 +189,10 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
         salaryLevelComboBoxField.SelectedIndex = -1;
     }
 
-    private void SalaryLevelComboBoxField_SelectedIndexChanged(object sender, EventArgs e)
+    private void SalaryLevelComboBoxField_SelectedIndexChanged(
+        object sender,
+        EventArgs e
+    )
     {
         if (salaryLevelComboBoxField.SelectedItem is not SalaryLevelDto dto)
         {
@@ -186,7 +202,10 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
         salaryLevelTextBoxField.Text = dto.Coefficient.ToString();
     }
 
-    private void PositionComboBoxField_SelectedIndexChanged(object sender, EventArgs e)
+    private void PositionComboBoxField_SelectedIndexChanged(
+        object sender,
+        EventArgs e
+    )
     {
         if (positionComboBoxField.SelectedItem is not PositionDto dto)
         {
@@ -228,12 +247,13 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
             FirstName = firstNameTextBoxField.Text.Trim(),
             MiddleName = middleNameTextBoxField.Text.Trim(),
             LastName = lastNameTextBoxField.Text.Trim(),
-            DateOfBirth = DateOnly.FromDateTime(dateOfBirthDateTimePicker.Value),
-            Gender = maleRadioButton.Checked
-                ? true
-                : femaleRadioButton.Checked
-                    ? false
-                    : null,
+            DateOfBirth = DateOnly.FromDateTime(
+                dateOfBirthDateTimePicker.Value
+            ),
+            Gender =
+                maleRadioButton.Checked ? true
+                : femaleRadioButton.Checked ? false
+                : null,
             TaxCode = taxCodeTextBoxField.Text.Trim(),
             CitizenId = citizenIdTextBoxField.Text.Trim(),
             DepartmentId = departmentId,
@@ -243,9 +263,17 @@ public partial class EmployeeEditorPage : EditorTemplate, IEditorUserControl<Emp
 
         int result = _mode switch
         {
-            EditorMode.Create => EmployeeBusiness.Instance.InsertEmployee(employee),
-            EditorMode.Edit => EmployeeBusiness.Instance.UpdateEmployee(employee),
-            _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+            EditorMode.Create => EmployeeBusiness.Instance.InsertEmployee(
+                employee
+            ),
+            EditorMode.Edit => EmployeeBusiness.Instance.UpdateEmployee(
+                employee
+            ),
+            _ => throw new InvalidEnumArgumentException(
+                nameof(Mode),
+                (int)_mode,
+                typeof(EditorMode)
+            ),
         };
 
         if (result > 0)

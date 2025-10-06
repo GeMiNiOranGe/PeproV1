@@ -67,17 +67,18 @@ public class ControlUiMediator(Panel workplacePanel) : IMediator
                 PushEditor<RoleEditorPage, RoleDto>(data);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(ev), ev, "This event is not supported.");
+                throw new ArgumentOutOfRangeException(
+                    nameof(ev),
+                    ev,
+                    "This event is not supported."
+                );
         }
     }
 
     private TControl Create<TControl>()
         where TControl : MediatedTemplate, new()
     {
-        return new()
-        {
-            Mediator = this,
-        };
+        return new() { Mediator = this };
     }
 
     private void PushEditor<TEditorControl, TDto>(object? data)

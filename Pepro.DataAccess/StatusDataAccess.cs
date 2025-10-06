@@ -19,11 +19,11 @@ public class StatusDataAccess
 
     public IEnumerable<Status> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Status.StatusId
                 , Status.Name
             FROM Status
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)

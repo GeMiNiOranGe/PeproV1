@@ -4,11 +4,16 @@ namespace Pepro.Presentation.Controls.Atoms;
 
 public class PeproDataGridView : DataGridView
 {
-    public PeproDataGridView() : base()
+    public PeproDataGridView()
+        : base()
     {
         AllowUserToAddRows = false;
         AllowUserToDeleteRows = false;
-        Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        Anchor =
+            AnchorStyles.Top
+            | AnchorStyles.Bottom
+            | AnchorStyles.Left
+            | AnchorStyles.Right;
         AutoGenerateColumns = false;
         AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -98,9 +103,8 @@ public class PeproDataGridView : DataGridView
 
     public void ResetBackgroundColor()
     {
-        BackgroundColor = Parent != null
-            ? Parent.BackColor
-            : SystemColors.ControlDark;
+        BackgroundColor =
+            Parent != null ? Parent.BackColor : SystemColors.ControlDark;
     }
 
     public bool ShouldSerializeBackgroundColor()
@@ -110,7 +114,9 @@ public class PeproDataGridView : DataGridView
             : BackgroundColor != SystemColors.ControlDark;
     }
 
-    protected override void OnDataBindingComplete(DataGridViewBindingCompleteEventArgs e)
+    protected override void OnDataBindingComplete(
+        DataGridViewBindingCompleteEventArgs e
+    )
     {
         base.OnDataBindingComplete(e);
         ClearSelection();
@@ -140,9 +146,10 @@ public class PeproDataGridView : DataGridView
         base.OnRowPostPaint(e);
         string rowNumber = (e.RowIndex + 1).ToString();
 
-        StringFormat format = new() {
+        StringFormat format = new()
+        {
             Alignment = StringAlignment.Far,
-            LineAlignment = StringAlignment.Center
+            LineAlignment = StringAlignment.Center,
         };
 
         Rectangle headerBounds = new(

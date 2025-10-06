@@ -38,7 +38,10 @@ public partial class DepartmentPage : CrudTemplate
         LoadDepartments();
     }
 
-    private void DepartmentDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void DepartmentDataGridView_CellClick(
+        object sender,
+        DataGridViewCellEventArgs e
+    )
     {
         BindDataGridViewCellClick<DepartmentDto>(
             (DataGridView)sender,
@@ -87,7 +90,8 @@ public partial class DepartmentPage : CrudTemplate
     {
         BindDeleteButtonClick<DepartmentDto>(
             departmentDataGridView,
-            (item) => DepartmentBusiness.Instance.DeleteDepartment(item.DepartmentId),
+            (item) =>
+                DepartmentBusiness.Instance.DeleteDepartment(item.DepartmentId),
             LoadDepartments
         );
     }

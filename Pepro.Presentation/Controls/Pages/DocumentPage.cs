@@ -38,7 +38,10 @@ public partial class DocumentPage : CrudTemplate
         LoadDocuments();
     }
 
-    private void DocumentDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void DocumentDataGridView_CellClick(
+        object sender,
+        DataGridViewCellEventArgs e
+    )
     {
         BindDataGridViewCellClick<DocumentDto>(
             (DataGridView)sender,
@@ -105,7 +108,8 @@ public partial class DocumentPage : CrudTemplate
             return;
         }
 
-        AssignmentDto? assignment = AssignmentBusiness.Instance.GetAssignmentByDocumentId(documentId);
+        AssignmentDto? assignment =
+            AssignmentBusiness.Instance.GetAssignmentByDocumentId(documentId);
         if (assignment == null)
         {
             return;
@@ -114,14 +118,19 @@ public partial class DocumentPage : CrudTemplate
         assignmentNameTextBoxField.Text = assignment.Name;
     }
 
-    private void AssignmentIdTextBoxField_TextChanged(object sender, EventArgs e)
+    private void AssignmentIdTextBoxField_TextChanged(
+        object sender,
+        EventArgs e
+    )
     {
         if (!int.TryParse(assignmentIdTextBoxField.Text, out int assignmentId))
         {
             return;
         }
 
-        ProjectDto? project = ProjectBusiness.Instance.GetProjectByAssignmentId(assignmentId);
+        ProjectDto? project = ProjectBusiness.Instance.GetProjectByAssignmentId(
+            assignmentId
+        );
         if (project == null)
         {
             return;

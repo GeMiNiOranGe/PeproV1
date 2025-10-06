@@ -1,9 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -21,7 +21,7 @@ public class DocumentDataAccess
 
     public IEnumerable<Document> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Document.DocumentId
                 , Document.Title
                 , Document.CreateAt
@@ -36,7 +36,7 @@ public class DocumentDataAccess
                 , Document.IsDeleted
             FROM Document
             WHERE Document.IsDeleted = 0
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
@@ -45,7 +45,7 @@ public class DocumentDataAccess
 
     public IEnumerable<Document> Search(string searchValue)
     {
-        string query = @"
+        string query = """
             SELECT Document.DocumentId
                 , Document.Title
                 , Document.CreateAt
@@ -66,9 +66,14 @@ public class DocumentDataAccess
                     OR Document.AssignmentId LIKE '%' + @SearchValue + '%'
                 )
                 AND Document.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
-        parameters.Add("SearchValue", SqlDbType.NVarChar, DatabaseConstants.SEARCH_SIZE, searchValue);
+        parameters.Add(
+            "SearchValue",
+            SqlDbType.NVarChar,
+            DatabaseConstants.SEARCH_SIZE,
+            searchValue
+        );
 
         return DataProvider
             .Instance.ExecuteQuery(query, [.. parameters])
@@ -77,11 +82,11 @@ public class DocumentDataAccess
 
     public int Delete(int documentId)
     {
-        string query = @"
+        string query = """
             UPDATE Document
             SET IsDeleted = 1
             WHERE DocumentId = @DocumentId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("DocumentId", SqlDbType.Int, documentId);
 

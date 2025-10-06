@@ -1,10 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Contracts;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -22,7 +22,7 @@ public class EmployeeDataAccess
 
     public Employee? GetById(int employeeId)
     {
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -41,7 +41,7 @@ public class EmployeeDataAccess
             FROM Employee
             WHERE Employee.EmployeeId = @EmployeeId
             AND Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("EmployeeId", SqlDbType.Int, employeeId);
 
@@ -52,7 +52,7 @@ public class EmployeeDataAccess
 
     public IEnumerable<Employee> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -70,7 +70,7 @@ public class EmployeeDataAccess
                 , Employee.DeletedAt
             FROM Employee
             WHERE Employee.IsDeleted = 0
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
@@ -84,7 +84,7 @@ public class EmployeeDataAccess
             return [];
         }
 
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -104,7 +104,7 @@ public class EmployeeDataAccess
             INNER JOIN @EmployeeIds AS EmployeeIds
                     ON EmployeeIds.Id = Employee.EmployeeId
             WHERE Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
 
         DataTable entityIds = TableParameters.CreateEntityIds(employeeIds);
@@ -117,7 +117,7 @@ public class EmployeeDataAccess
 
     public IEnumerable<Employee> GetManyByAssignmentId(int assignmentId)
     {
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -138,7 +138,7 @@ public class EmployeeDataAccess
                     ON AssignmentDetail.EmployeeId = Employee.EmployeeId
             WHERE AssignmentDetail.AssignmentId = @AssignmentId
             AND Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("AssignmentId", SqlDbType.Int, assignmentId);
 
@@ -149,7 +149,7 @@ public class EmployeeDataAccess
 
     public IEnumerable<Employee> GetManyByDepartmentId(int departmentId)
     {
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -168,7 +168,7 @@ public class EmployeeDataAccess
             FROM Employee
             WHERE Employee.DepartmentId = @DepartmentId
             AND Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("DepartmentId", SqlDbType.Int, departmentId);
 
@@ -179,7 +179,7 @@ public class EmployeeDataAccess
 
     public IEnumerable<Employee> GetManyByProjectId(int projectId)
     {
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -203,7 +203,7 @@ public class EmployeeDataAccess
                     ON DepartmentProject.DepartmentId = Department.DepartmentId
             WHERE DepartmentProject.ProjectId = @ProjectId
                 AND Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("ProjectId", SqlDbType.Int, projectId);
 
@@ -214,7 +214,7 @@ public class EmployeeDataAccess
 
     public IEnumerable<Employee> Search(string searchValue)
     {
-        string query = @"
+        string query = """
             SELECT Employee.EmployeeId
                 , Employee.FirstName
                 , Employee.MiddleName
@@ -237,9 +237,14 @@ public class EmployeeDataAccess
                     OR Employee.LastName + ' ' + IsNull(Employee.MiddleName + ' ', '') + Employee.FirstName LIKE '%' + @SearchValue + '%'
                 )
                 AND Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
-        parameters.Add("SearchValue", SqlDbType.NVarChar, DatabaseConstants.SEARCH_SIZE, searchValue);
+        parameters.Add(
+            "SearchValue",
+            SqlDbType.NVarChar,
+            DatabaseConstants.SEARCH_SIZE,
+            searchValue
+        );
 
         return DataProvider
             .Instance.ExecuteQuery(query, [.. parameters])
@@ -248,7 +253,7 @@ public class EmployeeDataAccess
 
     public IEnumerable<PhoneNumber> GetPhoneNumbersById(int employeeId)
     {
-        string query = @"
+        string query = """
             SELECT PhoneNumber.PhoneNumberId
                 , PhoneNumber.Number
                 , PhoneNumber.EmployeeId
@@ -257,7 +262,7 @@ public class EmployeeDataAccess
                     ON Employee.EmployeeId = PhoneNumber.EmployeeId
             WHERE Employee.EmployeeId = @EmployeeId
             AND Employee.IsDeleted = 0
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("EmployeeId", SqlDbType.Int, employeeId);
 
@@ -268,7 +273,7 @@ public class EmployeeDataAccess
 
     public Employee? Add(InsertEmployeeModel model)
     {
-        string query = @"
+        string query = """
             INSERT INTO [dbo].[Employee]
             (
                 [FirstName]
@@ -311,14 +316,19 @@ public class EmployeeDataAccess
                 , @PositionId
                 , @SalaryLevelId
             )
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("FirstName", SqlDbType.NVarChar, 10, model.FirstName);
         parameters.Add("MiddleName", SqlDbType.NVarChar, 30, model.MiddleName);
         parameters.Add("LastName", SqlDbType.NVarChar, 10, model.LastName);
         parameters.Add("DateOfBirth", SqlDbType.Date, model.DateOfBirth);
         parameters.Add("Gender", SqlDbType.Bit, model.Gender);
-        parameters.Add("TaxCode", SqlDbType.VarBinary, DatabaseConstants.MAX_SIZE, model.TaxCode);
+        parameters.Add(
+            "TaxCode",
+            SqlDbType.VarBinary,
+            DatabaseConstants.MAX_SIZE,
+            model.TaxCode
+        );
         parameters.Add("CitizenId", SqlDbType.VarChar, 12, model.CitizenId);
         parameters.Add("DepartmentId", SqlDbType.Int, model.DepartmentId);
         parameters.Add("PositionId", SqlDbType.Int, model.PositionId);
@@ -331,7 +341,7 @@ public class EmployeeDataAccess
 
     public int Insert(InsertEmployeeModel model)
     {
-        string query = @"
+        string query = """
             INSERT INTO [dbo].[Employee]
             (
                 [FirstName]
@@ -358,14 +368,19 @@ public class EmployeeDataAccess
                 , @PositionId
                 , @SalaryLevelId
             )
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("FirstName", SqlDbType.NVarChar, 10, model.FirstName);
         parameters.Add("MiddleName", SqlDbType.NVarChar, 30, model.MiddleName);
         parameters.Add("LastName", SqlDbType.NVarChar, 10, model.LastName);
         parameters.Add("DateOfBirth", SqlDbType.Date, model.DateOfBirth);
         parameters.Add("Gender", SqlDbType.Bit, model.Gender);
-        parameters.Add("TaxCode", SqlDbType.VarBinary, DatabaseConstants.MAX_SIZE, model.TaxCode);
+        parameters.Add(
+            "TaxCode",
+            SqlDbType.VarBinary,
+            DatabaseConstants.MAX_SIZE,
+            model.TaxCode
+        );
         parameters.Add("CitizenId", SqlDbType.VarChar, 12, model.CitizenId);
         parameters.Add("DepartmentId", SqlDbType.Int, model.DepartmentId);
         parameters.Add("PositionId", SqlDbType.Int, model.PositionId);
@@ -382,7 +397,12 @@ public class EmployeeDataAccess
             .Set("LastName", SqlDbType.NVarChar, 10, model.LastName)
             .Set("DateOfBirth", SqlDbType.Date, model.DateOfBirth)
             .Set("Gender", SqlDbType.Bit, model.Gender)
-            .Set("TaxCode", SqlDbType.VarBinary, DatabaseConstants.MAX_SIZE, model.TaxCode)
+            .Set(
+                "TaxCode",
+                SqlDbType.VarBinary,
+                DatabaseConstants.MAX_SIZE,
+                model.TaxCode
+            )
             .Set("CitizenId", SqlDbType.VarChar, 12, model.CitizenId)
             .Set("DepartmentId", SqlDbType.Int, model.DepartmentId)
             .Set("PositionId", SqlDbType.Int, model.PositionId)
@@ -396,17 +416,20 @@ public class EmployeeDataAccess
             return 0;
         }
 
-        return DataProvider.Instance.ExecuteNonQuery(result.Query, [.. result.Parameters]);
+        return DataProvider.Instance.ExecuteNonQuery(
+            result.Query,
+            [.. result.Parameters]
+        );
     }
 
     public int Delete(int employeeId)
     {
-        string query = @"
+        string query = """
             UPDATE Employee
             SET IsDeleted = 1,
                 DeletedAt = GetDate()
             WHERE EmployeeId = @EmployeeId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("EmployeeId", SqlDbType.Int, employeeId);
 

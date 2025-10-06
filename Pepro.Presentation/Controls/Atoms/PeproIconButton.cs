@@ -6,17 +6,14 @@ public class PeproIconButton : Button
 {
     private Image? _defaultImage;
 
-    public PeproIconButton() : base() { }
+    public PeproIconButton()
+        : base() { }
 
     [Category("Appearance")]
     [Description("The image displayed when the button is pressed.")]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     [DefaultValue(null)]
-    public Image? PressedImage
-    {
-        get;
-        set;
-    }
+    public Image? PressedImage { get; set; }
 
     protected override void OnMouseDown(MouseEventArgs mevent)
     {

@@ -24,10 +24,7 @@ static class Program
                 employeeId = loginForm.EmployeeId;
             }
 
-            using MainForm menuForm = new()
-            {
-                EmployeeId = employeeId
-            };
+            using MainForm menuForm = new() { EmployeeId = employeeId };
             if (menuForm.ShowDialog() != DialogResult.Retry)
             {
                 break;

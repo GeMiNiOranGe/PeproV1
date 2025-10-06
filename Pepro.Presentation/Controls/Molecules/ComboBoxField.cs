@@ -112,7 +112,8 @@ public partial class ComboBoxField : InputFieldTemplate, INotifyPropertyChanged
     }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    public new ControlBindingsCollection DataBindings => comboBoxField.DataBindings;
+    public new ControlBindingsCollection DataBindings =>
+        comboBoxField.DataBindings;
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -122,7 +123,13 @@ public partial class ComboBoxField : InputFieldTemplate, INotifyPropertyChanged
         set => comboBoxField.BindingContext = value;
     }
 
-    protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
+    protected override void SetBoundsCore(
+        int x,
+        int y,
+        int width,
+        int height,
+        BoundsSpecified specified
+    )
     {
         base.SetBoundsCore(x, y, width, DefaultSize.Height, specified);
     }
@@ -147,10 +154,16 @@ public partial class ComboBoxField : InputFieldTemplate, INotifyPropertyChanged
 
     protected void OnPropertyChanged(string propertyName)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(
+            this,
+            new PropertyChangedEventArgs(propertyName)
+        );
     }
 
-    private void InputFieldComboBox_SelectedIndexChanged(object sender, EventArgs e)
+    private void InputFieldComboBox_SelectedIndexChanged(
+        object sender,
+        EventArgs e
+    )
     {
         if (Events[s_selectedIndexChangedEvent] is EventHandler handler)
         {

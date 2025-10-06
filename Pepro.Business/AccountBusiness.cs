@@ -1,10 +1,10 @@
 ﻿using System.Security.Authentication;
-using Pepro.Business.Utilities;
-using Pepro.Business.Security;
-using Pepro.DataAccess;
-using Pepro.DataAccess.Entities;
-using Pepro.DataAccess.Contracts;
 using Pepro.Business.Contracts;
+using Pepro.Business.Security;
+using Pepro.Business.Utilities;
+using Pepro.DataAccess;
+using Pepro.DataAccess.Contracts;
+using Pepro.DataAccess.Entities;
 
 namespace Pepro.Business;
 
@@ -29,7 +29,9 @@ public class AccountBusiness
 
     public IEnumerable<object> SearchAccountViews(string searchValue)
     {
-        IEnumerable<Account> accounts = AccountDataAccess.Instance.Search(searchValue);
+        IEnumerable<Account> accounts = AccountDataAccess.Instance.Search(
+            searchValue
+        );
         return MapAccountsToViews(accounts);
     }
 
@@ -44,7 +46,7 @@ public class AccountBusiness
             Password = hashResult.HashedMessage,
             Salt = hashResult.Salt,
             IsActive = true,
-            EmployeeId = employee.EmployeeId
+            EmployeeId = employee.EmployeeId,
         };
         return AccountDataAccess.Instance.Insert(model);
     }
@@ -114,7 +116,9 @@ public class AccountBusiness
         return AccountDataAccess.Instance.Delete(accountId);
     }
 
-    private IEnumerable<AccountView> MapAccountsToViews(IEnumerable<Account> accounts)
+    private IEnumerable<AccountView> MapAccountsToViews(
+        IEnumerable<Account> accounts
+    )
     {
         IEnumerable<int> employeeIds = accounts
             .Select(account => account.EmployeeId)

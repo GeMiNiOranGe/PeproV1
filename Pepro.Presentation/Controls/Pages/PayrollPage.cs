@@ -1,8 +1,8 @@
-﻿using Pepro.Business;
+﻿using System.Globalization;
+using Pepro.Business;
 using Pepro.Presentation.Controls.Templates;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Utilities;
-using System.Globalization;
 
 namespace Pepro.Presentation.Controls.Pages;
 
@@ -39,7 +39,7 @@ public partial class PayrollPage : MediatedTemplate
         {
             FileName = "Payroll-" + DateTime.Now.ToString("ddMMyyyy-HHmmss"),
             Filter = "Excel Files|*.xlsx",
-            Title = "Save Excel File"
+            Title = "Save Excel File",
         };
 
         if (saveFileDialog.ShowDialog() == DialogResult.OK)

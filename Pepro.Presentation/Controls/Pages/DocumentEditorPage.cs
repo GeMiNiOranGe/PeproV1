@@ -1,4 +1,5 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Molecules;
 using Pepro.Presentation.Controls.Templates;
@@ -6,11 +7,12 @@ using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Interfaces;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Pages;
 
-public partial class DocumentEditorPage : EditorTemplate, IEditorUserControl<DocumentDto>
+public partial class DocumentEditorPage
+    : EditorTemplate,
+        IEditorUserControl<DocumentDto>
 {
     private DocumentDto _item = null!;
     private EditorMode _mode;
@@ -67,7 +69,11 @@ public partial class DocumentEditorPage : EditorTemplate, IEditorUserControl<Doc
             {
                 EditorMode.Create => "Create a new document",
                 EditorMode.Edit => "Edit document",
-                _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+                _ => throw new InvalidEnumArgumentException(
+                    nameof(Mode),
+                    (int)_mode,
+                    typeof(EditorMode)
+                ),
             };
         }
     }
@@ -81,7 +87,9 @@ public partial class DocumentEditorPage : EditorTemplate, IEditorUserControl<Doc
         projectNameComboBoxField.ValueMember = nameof(ProjectDto.ProjectId);
 
         assignmentNameComboBoxField.DisplayMember = nameof(AssignmentDto.Name);
-        assignmentNameComboBoxField.ValueMember = nameof(AssignmentDto.AssignmentId);
+        assignmentNameComboBoxField.ValueMember = nameof(
+            AssignmentDto.AssignmentId
+        );
 
         switch (_mode)
         {
@@ -124,15 +132,19 @@ public partial class DocumentEditorPage : EditorTemplate, IEditorUserControl<Doc
             return;
         }
 
-        AssignmentDto? assignment = AssignmentBusiness.Instance.GetAssignmentByDocumentId(documentId);
+        AssignmentDto? assignment =
+            AssignmentBusiness.Instance.GetAssignmentByDocumentId(documentId);
         if (assignment == null)
         {
             return;
         }
 
-        assignmentNameComboBoxField.DataSource = (List<AssignmentDto>)[assignment];
+        assignmentNameComboBoxField.DataSource =
+            (List<AssignmentDto>)[assignment];
 
-        ProjectDto? project = ProjectBusiness.Instance.GetProjectByAssignmentId(assignment.AssignmentId);
+        ProjectDto? project = ProjectBusiness.Instance.GetProjectByAssignmentId(
+            assignment.AssignmentId
+        );
         if (project == null)
         {
             return;
@@ -141,13 +153,23 @@ public partial class DocumentEditorPage : EditorTemplate, IEditorUserControl<Doc
         projectNameComboBoxField.ExecuteWithoutEvent(
             nameof(ComboBoxField.SelectedIndexChanged),
             ProjectNameComboBoxField_SelectedIndexChanged,
-            () => projectNameComboBoxField.DataSource = (List<ProjectDto>)[project]
+            () =>
+                projectNameComboBoxField.DataSource =
+                    (List<ProjectDto>)[project]
         );
     }
 
-    private void ProjectNameComboBoxField_SelectedIndexChanged(object? sender, EventArgs e)
+    private void ProjectNameComboBoxField_SelectedIndexChanged(
+        object? sender,
+        EventArgs e
+    )
     {
-        if (!int.TryParse(projectNameComboBoxField.SelectedValue?.ToString(), out int projectId))
+        if (
+            !int.TryParse(
+                projectNameComboBoxField.SelectedValue?.ToString(),
+                out int projectId
+            )
+        )
         {
             return;
         }

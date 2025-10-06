@@ -23,7 +23,8 @@ public static class ExcelExporter
             columnIndex = 1;
             foreach (DataGridViewCell cell in row.Cells)
             {
-                worksheet.Cell(rowIndex, columnIndex++).Value = cell.Value?.ToString();
+                worksheet.Cell(rowIndex, columnIndex++).Value =
+                    cell.Value?.ToString();
             }
         }
 

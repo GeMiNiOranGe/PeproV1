@@ -6,22 +6,26 @@ using Pepro.DataAccess.Entities;
 
 namespace Pepro.Business;
 
-public class ProjectBusiness {
+public class ProjectBusiness
+{
     private static ProjectBusiness? _instance;
 
-    public static ProjectBusiness Instance {
+    public static ProjectBusiness Instance
+    {
         get => _instance ??= new();
         private set => _instance = value;
     }
 
     private ProjectBusiness() { }
 
-    public ProjectDto? GetProjectByProjectId(int projectId) {
+    public ProjectDto? GetProjectByProjectId(int projectId)
+    {
         Project? project = ProjectDataAccess.Instance.GetById(projectId);
         return project?.ToDto();
     }
 
-    public IEnumerable<ProjectDto> GetProjects() {
+    public IEnumerable<ProjectDto> GetProjects()
+    {
         IEnumerable<Project> projects = ProjectDataAccess.Instance.GetMany();
         return projects.ToDtos();
     }
@@ -34,7 +38,9 @@ public class ProjectBusiness {
 
     public IEnumerable<ProjectView> SearchProjectViews(string searchValue)
     {
-        IEnumerable<Project> projects = ProjectDataAccess.Instance.Search(searchValue);
+        IEnumerable<Project> projects = ProjectDataAccess.Instance.Search(
+            searchValue
+        );
         return MapProjectsToViews(projects);
     }
 
@@ -43,12 +49,16 @@ public class ProjectBusiness {
         IEnumerable<Project> projects = ProjectDataAccess.Instance.GetMany();
         return projects.Select(project =>
         {
-            IEnumerable<Assignment> assignments = AssignmentDataAccess.Instance.GetManyByProjectId(project.ProjectId);
+            IEnumerable<Assignment> assignments =
+                AssignmentDataAccess.Instance.GetManyByProjectId(
+                    project.ProjectId
+                );
             int total = assignments.Count();
-            int completed = assignments.Count(assignment => assignment.StatusId == 4);
-            decimal percent = total != 0
-                ? Math.Round(completed * 100m / total, 2)
-                : 0;
+            int completed = assignments.Count(assignment =>
+                assignment.StatusId == 4
+            );
+            decimal percent =
+                total != 0 ? Math.Round(completed * 100m / total, 2) : 0;
 
             return new ProjectProgressView
             {
@@ -59,18 +69,23 @@ public class ProjectBusiness {
                 StartDate = project.StartDate,
                 EndDate = project.EndDate,
                 StatusId = project.StatusId,
-                ProgressPercent = percent
+                ProgressPercent = percent,
             };
         });
     }
 
-    public string[] GetProjectNamesByEmployeeId(int employeeId) {
-        IEnumerable<Project> projects = ProjectDataAccess.Instance.GetManyByEmployeeId(employeeId);
+    public string[] GetProjectNamesByEmployeeId(int employeeId)
+    {
+        IEnumerable<Project> projects =
+            ProjectDataAccess.Instance.GetManyByEmployeeId(employeeId);
         return [.. projects.Select(project => project.Name)];
     }
 
-    public ProjectDto? GetProjectByAssignmentId(int assignmentId) {
-        Project? project = ProjectDataAccess.Instance.GetByAssignmentId(assignmentId);
+    public ProjectDto? GetProjectByAssignmentId(int assignmentId)
+    {
+        Project? project = ProjectDataAccess.Instance.GetByAssignmentId(
+            assignmentId
+        );
         return project?.ToDto();
     }
 
@@ -78,7 +93,7 @@ public class ProjectBusiness {
     {
         return ProjectDataAccess.Instance.Delete(projectId);
     }
-    
+
     public int UpdateProject(ProjectDto dto)
     {
         Project? entity = ProjectDataAccess.Instance.GetById(dto.ProjectId);
@@ -90,7 +105,10 @@ public class ProjectBusiness {
         UpdateProjectModel model = new()
         {
             Name = new(dto.Name, entity.Name != dto.Name),
-            CustomerName = new(dto.CustomerName, entity.CustomerName != dto.CustomerName),
+            CustomerName = new(
+                dto.CustomerName,
+                entity.CustomerName != dto.CustomerName
+            ),
             ManagerId = new(dto.ManagerId, entity.ManagerId != dto.ManagerId),
             StartDate = new(dto.StartDate, entity.StartDate != dto.StartDate),
             EndDate = new(dto.EndDate, entity.EndDate != dto.EndDate),
@@ -105,7 +123,9 @@ public class ProjectBusiness {
         return ProjectDataAccess.Instance.Insert(entity);
     }
 
-    private IEnumerable<ProjectView> MapProjectsToViews(IEnumerable<Project> projects)
+    private IEnumerable<ProjectView> MapProjectsToViews(
+        IEnumerable<Project> projects
+    )
     {
         IEnumerable<int> managerIds = projects
             .Select(p => p.ManagerId)

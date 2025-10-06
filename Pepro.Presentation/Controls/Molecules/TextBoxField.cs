@@ -1,6 +1,6 @@
-﻿using Pepro.Presentation.Controls.Templates;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using Pepro.Presentation.Controls.Templates;
 
 namespace Pepro.Presentation.Controls.Molecules;
 
@@ -28,11 +28,7 @@ public partial class TextBoxField : InputFieldTemplate
     [Category("Appearance")]
     [DefaultValue(typeof(Color), "Gray")]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public Color FocusColor
-    {
-        get;
-        set;
-    }
+    public Color FocusColor { get; set; }
 
     [AllowNull]
     [DefaultValue("")]
@@ -98,7 +94,13 @@ public partial class TextBoxField : InputFieldTemplate
         return textBoxField.Focus();
     }
 
-    protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
+    protected override void SetBoundsCore(
+        int x,
+        int y,
+        int width,
+        int height,
+        BoundsSpecified specified
+    )
     {
         base.SetBoundsCore(x, y, width, DefaultSize.Height, specified);
     }
@@ -108,7 +110,9 @@ public partial class TextBoxField : InputFieldTemplate
         base.OnEnter(e);
         if (Enabled)
         {
-            underlinePanel.BackColor = FocusColor.IsEmpty ? Color.Gray : FocusColor;
+            underlinePanel.BackColor = FocusColor.IsEmpty
+                ? Color.Gray
+                : FocusColor;
         }
     }
 

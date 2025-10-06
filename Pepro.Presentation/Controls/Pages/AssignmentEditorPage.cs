@@ -1,15 +1,17 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Templates;
 using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Interfaces;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation.Controls.Pages;
 
-public partial class AssignmentEditorPage : EditorTemplate, IEditorUserControl<AssignmentDto>
+public partial class AssignmentEditorPage
+    : EditorTemplate,
+        IEditorUserControl<AssignmentDto>
 {
     private AssignmentDto _item = null!;
     private EditorMode _mode;
@@ -33,7 +35,8 @@ public partial class AssignmentEditorPage : EditorTemplate, IEditorUserControl<A
             isPublicToDepartmentCheckBox.Checked = _item.IsPublicToDepartment;
             startDateTimePicker.SetValue(_item.StartDate);
             endDateTimePicker.SetValue(_item.EndDate);
-            requiredDocumentCountNumericUpDownField.Value = _item.RequiredDocumentCount;
+            requiredDocumentCountNumericUpDownField.Value =
+                _item.RequiredDocumentCount;
         }
     }
 
@@ -48,7 +51,11 @@ public partial class AssignmentEditorPage : EditorTemplate, IEditorUserControl<A
             {
                 EditorMode.Create => "Create a new assignment",
                 EditorMode.Edit => "Edit assignment",
-                _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+                _ => throw new InvalidEnumArgumentException(
+                    nameof(Mode),
+                    (int)_mode,
+                    typeof(EditorMode)
+                ),
             };
         }
     }
@@ -153,16 +160,25 @@ public partial class AssignmentEditorPage : EditorTemplate, IEditorUserControl<A
             ManagerId = managerId,
             StartDate = startDateTimePicker.Value,
             EndDate = endDateTimePicker.Value,
-            RequiredDocumentCount = (int)requiredDocumentCountNumericUpDownField.Value,
+            RequiredDocumentCount = (int)
+                requiredDocumentCountNumericUpDownField.Value,
             ProjectId = projectId,
             StatusId = statusId,
         };
 
         int result = _mode switch
         {
-            EditorMode.Create => AssignmentBusiness.Instance.InsertAssignment(assignment),
-            EditorMode.Edit => AssignmentBusiness.Instance.UpdateAssignment(assignment),
-            _ => throw new InvalidEnumArgumentException(nameof(Mode), (int)_mode, typeof(EditorMode)),
+            EditorMode.Create => AssignmentBusiness.Instance.InsertAssignment(
+                assignment
+            ),
+            EditorMode.Edit => AssignmentBusiness.Instance.UpdateAssignment(
+                assignment
+            ),
+            _ => throw new InvalidEnumArgumentException(
+                nameof(Mode),
+                (int)_mode,
+                typeof(EditorMode)
+            ),
         };
 
         if (result > 0)

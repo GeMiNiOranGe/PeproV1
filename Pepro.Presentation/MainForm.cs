@@ -1,10 +1,10 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using Pepro.Business;
 using Pepro.Presentation.Controls.Atoms;
 using Pepro.Presentation.Enums;
 using Pepro.Presentation.Extensions;
 using Pepro.Presentation.Payloads;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
 
 namespace Pepro.Presentation;
 
@@ -97,10 +97,7 @@ public partial class MainForm : PeproForm
         _mediator.Notify(
             this,
             ControlUiEvent.NavigatePersonalPage,
-            new PersonalPagePayload()
-            {
-                EmployeeId = _employeeId,
-            }
+            new PersonalPagePayload() { EmployeeId = _employeeId }
         );
     }
 

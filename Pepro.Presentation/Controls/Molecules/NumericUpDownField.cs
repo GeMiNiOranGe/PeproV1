@@ -1,5 +1,5 @@
-﻿using Pepro.Presentation.Controls.Templates;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Pepro.Presentation.Controls.Templates;
 
 namespace Pepro.Presentation.Controls.Molecules;
 
@@ -44,7 +44,13 @@ public partial class NumericUpDownField : InputFieldTemplate
         }
     }
 
-    protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
+    protected override void SetBoundsCore(
+        int x,
+        int y,
+        int width,
+        int height,
+        BoundsSpecified specified
+    )
     {
         base.SetBoundsCore(x, y, width, DefaultSize.Height, specified);
     }

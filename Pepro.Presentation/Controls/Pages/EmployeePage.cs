@@ -31,7 +31,7 @@ public partial class EmployeePage : CrudTemplate
     {
         List<EmployeeView> employees =
         [
-            .. EmployeeBusiness.Instance.GetEmployeeViews()
+            .. EmployeeBusiness.Instance.GetEmployeeViews(),
         ];
         employeeDataGridView.DataSource = employees;
         numberOfEmployeesTextBoxField.Text = employees.Count.ToString();
@@ -42,7 +42,10 @@ public partial class EmployeePage : CrudTemplate
         LoadEmployees();
     }
 
-    private void EmployeeDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void EmployeeDataGridView_CellClick(
+        object sender,
+        DataGridViewCellEventArgs e
+    )
     {
         BindDataGridViewCellClick<EmployeeDto>(
             (DataGridView)sender,
@@ -104,7 +107,7 @@ public partial class EmployeePage : CrudTemplate
         {
             FileName = "Employees-" + DateTime.Now.ToString("ddMMyyyy-HHmmss"),
             Filter = "Excel Files|*.xlsx",
-            Title = "Save Excel File"
+            Title = "Save Excel File",
         };
 
         if (saveFileDialog.ShowDialog() == DialogResult.OK)

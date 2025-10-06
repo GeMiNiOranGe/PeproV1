@@ -3,5 +3,5 @@
 public enum EditorMode
 {
     Create,
-    Edit
+    Edit,
 }

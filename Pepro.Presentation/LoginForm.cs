@@ -1,9 +1,9 @@
-﻿using Pepro.Business;
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
+using Pepro.Business;
 using Pepro.Business.Contracts;
 using Pepro.Presentation.Controls.Atoms;
 using Pepro.Presentation.Utilities;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
 
 namespace Pepro.Presentation;
 
@@ -31,8 +31,12 @@ public partial class LoginForm : PeproForm
             color: ThemeColors.Text
         );
 
-        signinButton.FlatAppearance.MouseDownBackColor = ThemeColors.Secondary.Dark;
-        signinButton.FlatAppearance.MouseOverBackColor = ThemeColors.Secondary.Light;
+        signinButton.FlatAppearance.MouseDownBackColor = ThemeColors
+            .Secondary
+            .Dark;
+        signinButton.FlatAppearance.MouseOverBackColor = ThemeColors
+            .Secondary
+            .Light;
 
         closeButton.BackColor = ThemeColors.System.CloseButton.Normal;
         closeButton.BackgroundImage = IconProvider.GetIcon(
@@ -41,8 +45,14 @@ public partial class LoginForm : PeproForm
             color: ThemeColors.Text
         );
         closeButton.FlatAppearance.BorderSize = 0;
-        closeButton.FlatAppearance.MouseDownBackColor = ThemeColors.System.CloseButton.Dark;
-        closeButton.FlatAppearance.MouseOverBackColor = ThemeColors.System.CloseButton.Light;
+        closeButton.FlatAppearance.MouseDownBackColor = ThemeColors
+            .System
+            .CloseButton
+            .Dark;
+        closeButton.FlatAppearance.MouseOverBackColor = ThemeColors
+            .System
+            .CloseButton
+            .Light;
         closeButton.FlatStyle = FlatStyle.Flat;
 
         logoPictureBox.BackgroundImage = IconProvider.GetLogo();
@@ -67,7 +77,10 @@ public partial class LoginForm : PeproForm
 
         try
         {
-            LoginResult loginResult = AccountBusiness.Instance.TryLogin(accountName, password);
+            LoginResult loginResult = AccountBusiness.Instance.TryLogin(
+                accountName,
+                password
+            );
 
             switch (loginResult.Status)
             {
@@ -77,7 +90,8 @@ public partial class LoginForm : PeproForm
                     Close();
                     break;
                 case LoginStatus.InvalidInput:
-                    errorLabel.Text = "Username and password must not be empty!";
+                    errorLabel.Text =
+                        "Username and password must not be empty!";
                     break;
                 case LoginStatus.InvalidAccount:
                     errorLabel.Text = "Incorrect username or password!";
@@ -102,7 +116,13 @@ public partial class LoginForm : PeproForm
     public const int HT_CAPTION = 0x2;
 
     [DllImport("user32.dll")]
-    public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+    public static extern int SendMessage(
+        IntPtr hWnd,
+        int Msg,
+        int wParam,
+        int lParam
+    );
+
     [DllImport("user32.dll")]
     public static extern bool ReleaseCapture();
 

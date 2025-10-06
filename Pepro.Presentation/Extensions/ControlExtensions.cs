@@ -17,12 +17,14 @@ public static class ControlExtensions
         Action action
     )
     {
-        EventInfo eventInfo = typeof(T).GetEvent(eventName)
+        EventInfo eventInfo =
+            typeof(T).GetEvent(eventName)
             ?? throw new ArgumentException(
                 $"Event '{eventName}' not found on {typeof(T).Name}"
             );
 
-        Type eventHandlerType = eventInfo.EventHandlerType
+        Type eventHandlerType =
+            eventInfo.EventHandlerType
             ?? throw new ArgumentException(
                 $"Event '{eventName}' on {typeof(T).Name} does not have a delegate type."
             );

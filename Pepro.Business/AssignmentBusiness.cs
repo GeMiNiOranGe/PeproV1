@@ -6,10 +6,12 @@ using Pepro.DataAccess.Entities;
 
 namespace Pepro.Business;
 
-public class AssignmentBusiness {
+public class AssignmentBusiness
+{
     private static AssignmentBusiness? _instance;
 
-    public static AssignmentBusiness Instance {
+    public static AssignmentBusiness Instance
+    {
         get => _instance ??= new();
         private set => _instance = value;
     }
@@ -18,48 +20,69 @@ public class AssignmentBusiness {
 
     public IEnumerable<AssignmentView> GetAssignmentViews()
     {
-        IEnumerable<Assignment> assignments = AssignmentDataAccess.Instance.GetMany();
+        IEnumerable<Assignment> assignments =
+            AssignmentDataAccess.Instance.GetMany();
         return MapAssignmentsToViews(assignments);
     }
 
     public IEnumerable<AssignmentView> SearchAssignmentViews(string searchValue)
     {
-        IEnumerable<Assignment> assignments = AssignmentDataAccess.Instance.Search(searchValue);
+        IEnumerable<Assignment> assignments =
+            AssignmentDataAccess.Instance.Search(searchValue);
         return MapAssignmentsToViews(assignments);
     }
 
-    public IEnumerable<AssignmentDto> GetAssignmentsByProjectId(int projectId) {
-        IEnumerable<Assignment> assignments = AssignmentDataAccess.Instance.GetManyByProjectId(projectId);
+    public IEnumerable<AssignmentDto> GetAssignmentsByProjectId(int projectId)
+    {
+        IEnumerable<Assignment> assignments =
+            AssignmentDataAccess.Instance.GetManyByProjectId(projectId);
         return assignments.ToDtos();
     }
 
-    public IEnumerable<AssignmentProgressView> GetAssignmentProgressViewsByProjectId(int projectId) {
-        IEnumerable<Assignment> assignments = AssignmentDataAccess.Instance.GetManyByProjectId(projectId);
+    public IEnumerable<AssignmentProgressView> GetAssignmentProgressViewsByProjectId(
+        int projectId
+    )
+    {
+        IEnumerable<Assignment> assignments =
+            AssignmentDataAccess.Instance.GetManyByProjectId(projectId);
         return MapAssignmentsToProgressViews(assignments);
     }
 
-    public IEnumerable<AssignmentProgressView> GetAssignmentProgressViewsByEmployeeId(int employeeId) {
-        IEnumerable<Assignment> assignments = AssignmentDataAccess.Instance.GetManyByEmployeeId(employeeId);
+    public IEnumerable<AssignmentProgressView> GetAssignmentProgressViewsByEmployeeId(
+        int employeeId
+    )
+    {
+        IEnumerable<Assignment> assignments =
+            AssignmentDataAccess.Instance.GetManyByEmployeeId(employeeId);
         return MapAssignmentsToProgressViews(assignments);
     }
 
-    public EmployeeDto? GetAssignmentManager(int assignmentId) {
-        Employee? employee = AssignmentDataAccess.Instance.GetManager(assignmentId);
+    public EmployeeDto? GetAssignmentManager(int assignmentId)
+    {
+        Employee? employee = AssignmentDataAccess.Instance.GetManager(
+            assignmentId
+        );
         return employee?.ToDto();
     }
 
-    public AssignmentDto? GetAssignmentByDocumentId(int documentId) {
-        Assignment? assignment = AssignmentDataAccess.Instance.GetByDocumentId(documentId);
+    public AssignmentDto? GetAssignmentByDocumentId(int documentId)
+    {
+        Assignment? assignment = AssignmentDataAccess.Instance.GetByDocumentId(
+            documentId
+        );
         return assignment?.ToDto();
     }
 
-    public int DeleteAssignment(int assignmentId) {
+    public int DeleteAssignment(int assignmentId)
+    {
         return AssignmentDataAccess.Instance.Delete(assignmentId);
     }
 
     public int UpdateAssignment(AssignmentDto dto)
     {
-        Assignment? entity = AssignmentDataAccess.Instance.GetById(dto.AssignmentId);
+        Assignment? entity = AssignmentDataAccess.Instance.GetById(
+            dto.AssignmentId
+        );
         if (entity == null)
         {
             return 0;
@@ -68,11 +91,20 @@ public class AssignmentBusiness {
         UpdateAssignmentModel model = new()
         {
             Name = new(dto.Name, entity.Name != dto.Name),
-            IsPublicToProject = new(dto.IsPublicToProject, entity.IsPublicToProject != dto.IsPublicToProject),
-            IsPublicToDepartment = new(dto.IsPublicToDepartment, entity.IsPublicToDepartment != dto.IsPublicToDepartment),
+            IsPublicToProject = new(
+                dto.IsPublicToProject,
+                entity.IsPublicToProject != dto.IsPublicToProject
+            ),
+            IsPublicToDepartment = new(
+                dto.IsPublicToDepartment,
+                entity.IsPublicToDepartment != dto.IsPublicToDepartment
+            ),
             StartDate = new(dto.StartDate, entity.StartDate != dto.StartDate),
             EndDate = new(dto.EndDate, entity.EndDate != dto.EndDate),
-            RequiredDocumentCount = new(dto.RequiredDocumentCount, entity.RequiredDocumentCount != dto.RequiredDocumentCount),
+            RequiredDocumentCount = new(
+                dto.RequiredDocumentCount,
+                entity.RequiredDocumentCount != dto.RequiredDocumentCount
+            ),
             ManagerId = new(dto.ManagerId, entity.ManagerId != dto.ManagerId),
             ProjectId = new(dto.ProjectId, entity.ProjectId != dto.ProjectId),
             StatusId = new(dto.StatusId, entity.StatusId != dto.StatusId),
@@ -86,7 +118,9 @@ public class AssignmentBusiness {
         return AssignmentDataAccess.Instance.Insert(model);
     }
 
-    private IEnumerable<AssignmentView> MapAssignmentsToViews(IEnumerable<Assignment> assignments)
+    private IEnumerable<AssignmentView> MapAssignmentsToViews(
+        IEnumerable<Assignment> assignments
+    )
     {
         IEnumerable<int> managerIds = assignments
             .Select(a => a.ManagerId)
@@ -143,7 +177,9 @@ public class AssignmentBusiness {
         });
     }
 
-    private IEnumerable<AssignmentProgressView> MapAssignmentsToProgressViews(IEnumerable<Assignment> assignments)
+    private IEnumerable<AssignmentProgressView> MapAssignmentsToProgressViews(
+        IEnumerable<Assignment> assignments
+    )
     {
         IEnumerable<int> assignmentIds = assignments
             .Select(assignment => assignment.AssignmentId)
@@ -163,9 +199,13 @@ public class AssignmentBusiness {
                 out int documentCount
             );
             int requiredDocumentCount = assignment.RequiredDocumentCount;
-            decimal percent = requiredDocumentCount != 0
-                ? Math.Round(documentCount * 100m / requiredDocumentCount, 2)
-                : 0;
+            decimal percent =
+                requiredDocumentCount != 0
+                    ? Math.Round(
+                        documentCount * 100m / requiredDocumentCount,
+                        2
+                    )
+                    : 0;
 
             return new AssignmentProgressView
             {
@@ -179,7 +219,7 @@ public class AssignmentBusiness {
                 ManagerId = assignment.ManagerId,
                 ProjectId = assignment.ProjectId,
                 StatusId = assignment.StatusId,
-                ProgressPercent = percent
+                ProgressPercent = percent,
             };
         });
     }

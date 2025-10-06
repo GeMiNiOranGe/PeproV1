@@ -1,9 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Pepro.DataAccess.Entities;
 using Pepro.DataAccess.Extensions;
 using Pepro.DataAccess.Mappings;
 using Pepro.DataAccess.Utilities;
-using System.Data;
 
 namespace Pepro.DataAccess;
 
@@ -21,7 +21,7 @@ public class SalaryScaleDataAccess
 
     public SalaryScale? GetBySalaryLevelId(int salaryLevelId)
     {
-        string query = @"
+        string query = """
             SELECT SalaryScale.SalaryScaleId
                 , SalaryScale.[Group]
                 , SalaryScale.Name
@@ -29,7 +29,7 @@ public class SalaryScaleDataAccess
             INNER JOIN SalaryLevel
                     ON SalaryLevel.SalaryScaleId = SalaryScale.SalaryScaleId
             WHERE SalaryLevel.SalaryLevelId = @SalaryLevelId
-        ";
+            """;
         List<SqlParameter> parameters = [];
         parameters.Add("SalaryLevelId", SqlDbType.Int, salaryLevelId);
 
@@ -40,33 +40,35 @@ public class SalaryScaleDataAccess
 
     public IEnumerable<SalaryScale> GetMany()
     {
-        string query = @"
+        string query = """
             SELECT SalaryScale.SalaryScaleId
                 , SalaryScale.[Group]
                 , SalaryScale.Name
             FROM SalaryScale
-        ";
+            """;
 
         return DataProvider
             .Instance.ExecuteQuery(query)
             .MapMany(SalaryScaleMapper.FromDataRow);
     }
 
-    public IEnumerable<SalaryScale> GetManyByIds(IEnumerable<int> salaryScaleIds)
+    public IEnumerable<SalaryScale> GetManyByIds(
+        IEnumerable<int> salaryScaleIds
+    )
     {
         if (salaryScaleIds == null || !salaryScaleIds.Any())
         {
             return [];
         }
 
-        string query = @"
+        string query = """
             SELECT SalaryScale.SalaryScaleId
                 , SalaryScale.[Group]
                 , SalaryScale.Name
             FROM SalaryScale
             INNER JOIN @SalaryScaleIds AS SalaryScaleIds
                     ON SalaryScaleIds.Id = SalaryScale.SalaryScaleId
-        ";
+            """;
         List<SqlParameter> parameters = [];
 
         DataTable entityIds = TableParameters.CreateEntityIds(salaryScaleIds);

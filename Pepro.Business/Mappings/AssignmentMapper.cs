@@ -39,7 +39,9 @@ static class AssignmentMapper
         };
     }
 
-    public static IEnumerable<AssignmentDto> ToDtos(this IEnumerable<Assignment> entities)
+    public static IEnumerable<AssignmentDto> ToDtos(
+        this IEnumerable<Assignment> entities
+    )
     {
         return entities.Select(entity => entity.ToDto());
     }

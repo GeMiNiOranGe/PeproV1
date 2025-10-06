@@ -2,9 +2,5 @@
 
 public sealed record PersonalPagePayload
 {
-    public required int EmployeeId
-    {
-        get;
-        init;
-    }
+    public required int EmployeeId { get; init; }
 }
