@@ -55,7 +55,31 @@ We welcome contributions!
 
 ## 📷 Screenshots
 
-*Not available*
+![image1](Docs/Screenshots/image1.png)
+*Figure 1: Login Form*
+
+![image2](Docs/Screenshots/image2.png)
+*Figure 2: Account with Admin role in Main page*
+
+<details>
+  <summary>More</summary>
+
+![image3](Docs/Screenshots/image3.png)
+*Figure 3: Personal information page*
+
+![image4](Docs/Screenshots/image4.png)
+*Figure 4: Accounts with roles of Department Head and HR in Employee page*
+
+![image5](Docs/Screenshots/image5.png)
+*Figure 5: Employee information editing page*
+
+![image6](Docs/Screenshots/image6.png)
+*Figure 6: Account with roles of Department Head and Finance in Payroll page*
+
+![image7](Docs/Screenshots/image7.png)
+*Figure 7: Account with IT role in Assignment page*
+
+</details>
 
 ## 📃 License
 
