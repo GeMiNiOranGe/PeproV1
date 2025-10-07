@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Pepro.Presentation.Controls.Templates;
 using static System.Windows.Forms.ComboBox;
@@ -121,17 +121,6 @@ public partial class ComboBoxField : InputFieldTemplate, INotifyPropertyChanged
     {
         get => comboBoxField.BindingContext;
         set => comboBoxField.BindingContext = value;
-    }
-
-    protected override void SetBoundsCore(
-        int x,
-        int y,
-        int width,
-        int height,
-        BoundsSpecified specified
-    )
-    {
-        base.SetBoundsCore(x, y, width, DefaultSize.Height, specified);
     }
 
     protected override void OnBackColorChanged(EventArgs e)

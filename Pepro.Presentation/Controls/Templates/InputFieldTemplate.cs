@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Pepro.Presentation.Controls.Atoms;
 
@@ -38,5 +38,16 @@ public partial class InputFieldTemplate : PeproUserControl
     {
         get => base.Size;
         set => base.Size = value;
+    }
+
+    protected override void SetBoundsCore(
+        int x,
+        int y,
+        int width,
+        int height,
+        BoundsSpecified specified
+    )
+    {
+        base.SetBoundsCore(x, y, width, DefaultSize.Height, specified);
     }
 }
