@@ -39,6 +39,7 @@ Pepro/
 
 3. Set up the Database
 
+    * Open `cmd` and run script `SetupDatabase.bat`
 	* Update the connection string in [`Pepro.DataAccess\Utilities\DataProvider.cs`](Pepro.DataAccess\Utilities\DataProvider.cs#L8)
 
 4. Build and Run
