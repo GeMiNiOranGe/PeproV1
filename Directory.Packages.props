@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="ClosedXML" Version="0.105.0" />
+    <PackageVersion Include="Svg" Version="3.4.7" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+  </ItemGroup>
+</Project>

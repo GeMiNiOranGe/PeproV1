@@ -3,8 +3,8 @@
     <ProjectReference Include="..\Pepro.Business\Pepro.Business.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="Svg" Version="3.4.7" />
+    <PackageReference Include="ClosedXML" />
+    <PackageReference Include="Svg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
