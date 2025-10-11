@@ -11,6 +11,9 @@ public class SalaryLevelDataAccess
 {
     private static SalaryLevelDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="SalaryLevelDataAccess"/>.
+    /// </summary>
     public static SalaryLevelDataAccess Instance
     {
         get => _instance ??= new();
@@ -19,6 +22,16 @@ public class SalaryLevelDataAccess
 
     private SalaryLevelDataAccess() { }
 
+    /// <summary>
+    /// Retrieves multiple salary levels by their IDs.
+    /// </summary>
+    /// <param name="salaryLevelIds">
+    /// A collection of salary level IDs to retrieve.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="SalaryLevel"/> entities that match the specified IDs.
+    /// Returns an empty collection if no IDs are provided.
+    /// </returns>
     public IEnumerable<SalaryLevel> GetManyByIds(
         IEnumerable<int> salaryLevelIds
     )
@@ -47,6 +60,15 @@ public class SalaryLevelDataAccess
             .MapMany(SalaryLevelMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all salary levels associated with a specific salary scale.
+    /// </summary>
+    /// <param name="salaryScaleId">
+    /// The unique ID of the salary scale.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="SalaryLevel"/> entities belonging to the specified salary scale.
+    /// </returns>
     public IEnumerable<SalaryLevel> GetManyBySalaryScaleId(int salaryScaleId)
     {
         string query = """

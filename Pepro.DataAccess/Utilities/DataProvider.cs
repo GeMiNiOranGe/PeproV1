@@ -12,24 +12,36 @@ internal class DataProvider
 
     private DataProvider() { }
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="DataProvider"/>.
+    /// </summary>
     public static DataProvider Instance
     {
         get => _instance ??= new();
         private set => _instance = value;
     }
 
-    public SqlConnection CreateConnection()
+    /// <summary>
+    /// Creates and returns a new <see cref="SqlConnection"/> object.
+    /// </summary>
+    private SqlConnection CreateConnection()
     {
         return new SqlConnection(CONNECTION_STRING);
     }
 
-    public SqlCommand CreateCommand(string query)
+    /// <summary>
+    /// Creates a <see cref="SqlCommand"/> with the specified query and a new connection.
+    /// </summary>
+    private SqlCommand CreateCommand(string query)
     {
         SqlConnection connection = CreateConnection();
         return new SqlCommand(query, connection);
     }
 
-    public void OpenConnection(SqlConnection connection)
+    /// <summary>
+    /// Opens the specified SQL connection if it is closed or broken.
+    /// </summary>
+    private void OpenConnection(SqlConnection connection)
     {
         ConnectionState state = connection.State;
         if (state == ConnectionState.Closed || state == ConnectionState.Broken)
@@ -38,7 +50,10 @@ internal class DataProvider
         }
     }
 
-    public void CloseConnection(SqlConnection connection)
+    /// <summary>
+    /// Closes the specified SQL connection if it is not null.
+    /// </summary>
+    private void CloseConnection(SqlConnection connection)
     {
         if (connection == null)
         {
@@ -47,6 +62,9 @@ internal class DataProvider
         connection.Close();
     }
 
+    /// <summary>
+    /// Executes a SQL query and returns the result as a <see cref="DataTable"/>.
+    /// </summary>
     public DataTable ExecuteQuery(
         string query,
         SqlParameter[]? parameters = null,
@@ -62,12 +80,14 @@ internal class DataProvider
         }
 
         using SqlDataAdapter dataAdapter = new(command);
-
         DataTable dataTable = new();
         dataAdapter.Fill(dataTable);
         return dataTable;
     }
 
+    /// <summary>
+    /// Executes a non-query SQL command (INSERT, UPDATE, DELETE) and returns the number of affected rows.
+    /// </summary>
     public int ExecuteNonQuery(
         string query,
         SqlParameter[]? parameters = null,
@@ -90,14 +110,8 @@ internal class DataProvider
     }
 
     /// <summary>
-    ///     Executes the query, and returns the first column of the first row in the result
-    ///     set returned by the query. Additional columns or rows are ignored.
+    /// Executes a query and returns the first column of the first row from the result set.
     /// </summary>
-    /// <param name="query">query script.</param>
-    /// <returns>
-    ///     The first column of the first row in the result set, or a null reference (Nothing
-    ///     in Visual Basic) if the result set is empty. Returns a maximum of 2033 characters.
-    /// </returns>
     public object ExecuteScalar(
         string query,
         SqlParameter[]? parameters = null,
@@ -119,6 +133,9 @@ internal class DataProvider
         return obj;
     }
 
+    /// <summary>
+    /// Executes a reader-based query. Currently not implemented.
+    /// </summary>
     public void ExecuteReader(string query, out SqlDataReader dataReader)
     {
         throw new NotImplementedException();

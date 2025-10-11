@@ -9,6 +9,9 @@ public class StatusDataAccess
 {
     private static StatusDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="StatusDataAccess"/>.
+    /// </summary>
     public static StatusDataAccess Instance
     {
         get => _instance ??= new();
@@ -17,6 +20,12 @@ public class StatusDataAccess
 
     private StatusDataAccess() { }
 
+    /// <summary>
+    /// Retrieves all <see cref="Status"/> records from the database.
+    /// </summary>
+    /// <returns>
+    /// A collection of <see cref="Status"/> objects.
+    /// </returns>
     public IEnumerable<Status> GetMany()
     {
         string query = """

@@ -12,6 +12,9 @@ public class DepartmentDataAccess
 {
     private static DepartmentDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="DepartmentDataAccess"/>.
+    /// </summary>
     public static DepartmentDataAccess Instance
     {
         get => _instance ??= new();
@@ -20,6 +23,15 @@ public class DepartmentDataAccess
 
     private DepartmentDataAccess() { }
 
+    /// <summary>
+    /// Retrieves a department by its ID.
+    /// </summary>
+    /// <param name="departmentId">
+    /// The ID of the department to retrieve.
+    /// </param>
+    /// <returns>
+    /// The <see cref="Department"/> if found, otherwise null.
+    /// </returns>
     public Department? GetById(int departmentId)
     {
         string query = """
@@ -42,6 +54,12 @@ public class DepartmentDataAccess
             .MapToSingleOrDefault(DepartmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all departments.
+    /// </summary>
+    /// <returns>
+    /// An enumerable collection of <see cref="Department"/> objects.
+    /// </returns>
     public IEnumerable<Department> GetMany()
     {
         string query = """
@@ -61,6 +79,15 @@ public class DepartmentDataAccess
             .MapMany(DepartmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves departments by a list of IDs.
+    /// </summary>
+    /// <param name="departmentIds">
+    /// A collection of department IDs.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Department"/> objects.
+    /// </returns>
     public IEnumerable<Department> GetManyByIds(IEnumerable<int> departmentIds)
     {
         if (departmentIds == null || !departmentIds.Any())
@@ -91,6 +118,15 @@ public class DepartmentDataAccess
             .MapMany(DepartmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Searches for departments by name.
+    /// </summary>
+    /// <param name="searchValue">
+    /// The search value.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Department"/> objects matching the search criteria.
+    /// </returns>
     public IEnumerable<Department> Search(string searchValue)
     {
         string query = """
@@ -118,6 +154,15 @@ public class DepartmentDataAccess
             .MapMany(DepartmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Inserts a new department into the database.
+    /// </summary>
+    /// <param name="model">
+    /// The department data to insert.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the insert operation.
+    /// </returns>
     public int Insert(InsertDepartmentModel model)
     {
         string query = """
@@ -139,6 +184,18 @@ public class DepartmentDataAccess
         return DataProvider.Instance.ExecuteNonQuery(query, [.. parameters]);
     }
 
+    /// <summary>
+    /// Updates an existing department in the database.
+    /// </summary>
+    /// <param name="departmentId">
+    /// The ID of the department to update.
+    /// </param>
+    /// <param name="model">
+    /// The updated department data.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the update operation.
+    /// </returns>
     public int Update(int departmentId, UpdateDepartmentModel model)
     {
         QueryBuildResult result = new SqlUpdateQueryBuilder("Department")
@@ -159,6 +216,15 @@ public class DepartmentDataAccess
         );
     }
 
+    /// <summary>
+    /// Deletes a department from the database.
+    /// </summary>
+    /// <param name="departmentId">
+    /// The ID of the department to delete.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the delete operation.
+    /// </returns>
     public int Delete(int departmentId)
     {
         string query = """

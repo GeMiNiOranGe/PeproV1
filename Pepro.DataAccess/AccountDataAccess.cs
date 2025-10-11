@@ -12,6 +12,9 @@ public class AccountDataAccess
 {
     private static AccountDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="AccountDataAccess"/>.
+    /// </summary>
     public static AccountDataAccess Instance
     {
         get => _instance ??= new();
@@ -20,6 +23,15 @@ public class AccountDataAccess
 
     private AccountDataAccess() { }
 
+    /// <summary>
+    /// Retrieves an account by its ID.
+    /// </summary>
+    /// <param name="accountId">
+    /// The ID of the account to retrieve.
+    /// </param>
+    /// <returns>
+    /// The <see cref="Account"/> if found, otherwise null.
+    /// </returns>
     public Account? GetById(int accountId)
     {
         string query = """
@@ -45,6 +57,12 @@ public class AccountDataAccess
             .MapToSingleOrDefault(AccountMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all active accounts.
+    /// </summary>
+    /// <returns>
+    /// An enumerable collection of <see cref="Account"/> objects.
+    /// </returns>
     public IEnumerable<Account> GetMany()
     {
         string query = """
@@ -68,13 +86,13 @@ public class AccountDataAccess
     }
 
     /// <summary>
-    ///     Finds an account using a flexible search value (e.g., username, or email).
+    /// Finds an account using a flexible search value (e.g., username, or email) - unique columns.
     /// </summary>
     /// <param name="searchValue">
-    ///     The string value used to search across multiple account fields.
+    /// The search value to use.
     /// </param>
     /// <returns>
-    ///     The matching <see cref="Account"/>, or null if not found.
+    /// The <see cref="Account"/> if found, otherwise null.
     /// </returns>
     public Account? Find(string searchValue)
     {
@@ -106,6 +124,15 @@ public class AccountDataAccess
             .MapToSingleOrDefault(AccountMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Searches for accounts by username containing the search value.
+    /// </summary>
+    /// <param name="searchValue">
+    /// The search value to use.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Account"/> objects matching the search criteria.
+    /// </returns>
     public IEnumerable<Account> Search(string searchValue)
     {
         string query = """
@@ -136,6 +163,15 @@ public class AccountDataAccess
             .MapMany(AccountMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Enables/Disables an existing account in the database.
+    /// </summary>
+    /// <param name="accountId">
+    /// The ID of the account to enable/disable.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the enable/disable operation.
+    /// </returns>
     public int ToggleActive(int accountId)
     {
         string query = """
@@ -150,6 +186,15 @@ public class AccountDataAccess
         return DataProvider.Instance.ExecuteNonQuery(query, [.. parameters]);
     }
 
+    /// <summary>
+    /// Inserts a new account into the database.
+    /// </summary>
+    /// <param name="model">
+    /// The account data to insert.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the insert operation.
+    /// </returns>
     public int Insert(InsertAccountModel model)
     {
         string query = """
@@ -190,6 +235,18 @@ public class AccountDataAccess
         return DataProvider.Instance.ExecuteNonQuery(query, [.. parameters]);
     }
 
+    /// <summary>
+    /// Updates an existing account in the database.
+    /// </summary>
+    /// <param name="accountId">
+    /// The ID of the account to update.
+    /// </param>
+    /// <param name="model">
+    /// The updated account data.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the update operation.
+    /// </returns>
     public int Update(int accountId, UpdateAccountModel model)
     {
         QueryBuildResult result = new SqlUpdateQueryBuilder("Account")
@@ -223,6 +280,15 @@ public class AccountDataAccess
         );
     }
 
+    /// <summary>
+    /// Deletes an existing account in the database.
+    /// </summary>
+    /// <param name="accountId">
+    /// The ID of the account to delete.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the delete operation.
+    /// </returns>
     public int Delete(int accountId)
     {
         string query = """

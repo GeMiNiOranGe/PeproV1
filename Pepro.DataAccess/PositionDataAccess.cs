@@ -11,6 +11,9 @@ public class PositionDataAccess
 {
     private static PositionDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="PositionDataAccess"/>.
+    /// </summary>
     public static PositionDataAccess Instance
     {
         get => _instance ??= new();
@@ -19,6 +22,15 @@ public class PositionDataAccess
 
     private PositionDataAccess() { }
 
+    /// <summary>
+    /// Retrieves the position associated with a specific employee.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of the employee whose position information is to be retrieved.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Position"/> object representing the employee's position, or <c>null</c> if not found.
+    /// </returns>
     public Position? GetByEmployeeId(int employeeId)
     {
         string query = """
@@ -38,6 +50,12 @@ public class PositionDataAccess
             .MapToSingleOrDefault(PositionMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all positions from the database.
+    /// </summary>
+    /// <returns>
+    /// A collection of <see cref="Position"/> objects representing all positions.
+    /// </returns>
     public IEnumerable<Position> GetMany()
     {
         string query = """
@@ -52,6 +70,16 @@ public class PositionDataAccess
             .MapMany(PositionMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves positions that match the specified list of position IDs.
+    /// </summary>
+    /// <param name="positionIds">
+    /// A collection of position IDs to retrieve.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="Position"/> objects matching the specified IDs.
+    /// If no IDs are provided, returns an empty collection.
+    /// </returns>
     public IEnumerable<Position> GetManyByIds(IEnumerable<int> positionIds)
     {
         if (positionIds == null || !positionIds.Any())

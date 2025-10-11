@@ -12,6 +12,9 @@ public class ProjectDataAccess
 {
     private static ProjectDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="ProjectDataAccess"/>.
+    /// </summary>
     public static ProjectDataAccess Instance
     {
         get => _instance ??= new();
@@ -20,6 +23,15 @@ public class ProjectDataAccess
 
     private ProjectDataAccess() { }
 
+    /// <summary>
+    /// Retrieves a project by its unique identifier.
+    /// </summary>
+    /// <param name="projectId">
+    /// The ID of the project to retrieve.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Project"/> object if found; otherwise, <c>null</c>.
+    /// </returns>
     public Project? GetById(int projectId)
     {
         string query = """
@@ -46,6 +58,15 @@ public class ProjectDataAccess
             .MapToSingleOrDefault(ProjectMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves a project associated with a specific assignment.
+    /// </summary>
+    /// <param name="assignmentId">
+    /// The ID of the assignment linked to the project.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Project"/> object if found; otherwise, <c>null</c>.
+    /// </returns>
     public Project? GetByAssignmentId(int assignmentId)
     {
         string query = """
@@ -75,10 +96,10 @@ public class ProjectDataAccess
     }
 
     /// <summary>
-    ///     Retrieve all projects
+    /// Retrieves all projects.
     /// </summary>
     /// <returns>
-    ///     List of projects
+    /// A collection of <see cref="Project"/> objects.
     /// </returns>
     public IEnumerable<Project> GetMany()
     {
@@ -103,6 +124,15 @@ public class ProjectDataAccess
             .MapMany(ProjectMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves multiple projects based on a list of project IDs.
+    /// </summary>
+    /// <param name="projectIds">
+    /// The collection of project IDs to retrieve.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="Project"/> objects matching the specified IDs.
+    /// </returns>
     public IEnumerable<Project> GetManyByIds(IEnumerable<int> projectIds)
     {
         if (projectIds == null || !projectIds.Any())
@@ -137,6 +167,15 @@ public class ProjectDataAccess
             .MapMany(ProjectMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all projects associated with a given employee.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of the employee whose projects are to be retrieved.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="Project"/> objects related to the specified employee.
+    /// </returns>
     public IEnumerable<Project> GetManyByEmployeeId(int employeeId)
     {
         string query = """
@@ -167,6 +206,15 @@ public class ProjectDataAccess
             .MapMany(ProjectMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Searches for projects that match the specified keyword.
+    /// </summary>
+    /// <param name="searchValue">
+    /// The keyword to search by (matches project ID, name, or customer name).
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="Project"/> objects that match the search criteria.
+    /// </returns>
     public IEnumerable<Project> Search(string searchValue)
     {
         string query = """
@@ -203,6 +251,15 @@ public class ProjectDataAccess
             .MapMany(ProjectMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Inserts a new project record into the database.
+    /// </summary>
+    /// <param name="model">
+    /// The project data to insert.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the insert operation.
+    /// </returns>
     public int Insert(InsertProjectModel model)
     {
         string query = """
@@ -241,6 +298,18 @@ public class ProjectDataAccess
         return DataProvider.Instance.ExecuteNonQuery(query, [.. parameters]);
     }
 
+    /// <summary>
+    /// Updates an existing project record.
+    /// </summary>
+    /// <param name="projectId">
+    /// The ID of the project to update.
+    /// </param>
+    /// <param name="model">
+    /// The updated project data.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the update operation.
+    /// </returns>
     public int Update(int projectId, UpdateProjectModel model)
     {
         QueryBuildResult result = new SqlUpdateQueryBuilder("Project")
@@ -265,6 +334,15 @@ public class ProjectDataAccess
         );
     }
 
+    /// <summary>
+    /// Deletes a project from the database.
+    /// </summary>
+    /// <param name="projectId">
+    /// The ID of the project to delete.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the delete operation.
+    /// </returns>
     public int Delete(int projectId)
     {
         string query = """

@@ -11,6 +11,9 @@ public class PermissionDataAccess
 {
     private static PermissionDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="PermissionDataAccess"/>.
+    /// </summary>
     public static PermissionDataAccess Instance
     {
         get => _instance ??= new();
@@ -19,6 +22,15 @@ public class PermissionDataAccess
 
     private PermissionDataAccess() { }
 
+    /// <summary>
+    /// Retrieves all distinct permissions associated with a specified account ID.
+    /// </summary>
+    /// <param name="accountId">
+    /// The ID of the account whose permissions are to be retrieved.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="Permission"/> objects granted to the specified account.
+    /// </returns>
     public IEnumerable<Permission> GetManyByAccountId(int accountId)
     {
         string query = """

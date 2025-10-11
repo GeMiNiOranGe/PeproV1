@@ -12,6 +12,9 @@ public class AssignmentDataAccess
 {
     private static AssignmentDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="AssignmentDataAccess"/>.
+    /// </summary>
     public static AssignmentDataAccess Instance
     {
         get => _instance ??= new();
@@ -20,6 +23,15 @@ public class AssignmentDataAccess
 
     private AssignmentDataAccess() { }
 
+    /// <summary>
+    /// Retrieves an assignment by its ID.
+    /// </summary>
+    /// <param name="assignmentId">
+    /// The ID of the assignment to retrieve.
+    /// </param>
+    /// <returns>
+    /// The <see cref="Assignment"/> if found, otherwise null.
+    /// </returns>
     public Assignment? GetById(int assignmentId)
     {
         string query = """
@@ -49,6 +61,15 @@ public class AssignmentDataAccess
             .MapToSingleOrDefault(AssignmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves an assignment associated with a specific document ID.
+    /// </summary>
+    /// <param name="documentId">
+    /// The ID of the document.
+    /// </param>
+    /// <returns>
+    /// The <see cref="Assignment"/> if found, otherwise null.
+    /// </returns>
     public Assignment? GetByDocumentId(int documentId)
     {
         string query = """
@@ -81,11 +102,13 @@ public class AssignmentDataAccess
     }
 
     /// <summary>
-    ///     Take out the manager of the assignment
+    /// Retrieves the manager associated with an assignment.
     /// </summary>
-    /// <param name="assignmentId">Assignment id</param>
+    /// <param name="assignmentId">
+    /// The ID of the assignment.
+    /// </param>
     /// <returns>
-    ///     Manager
+    /// The <see cref="Employee"/> object representing the manager, or null if not found.
     /// </returns>
     public Employee? GetManager(int assignmentId)
     {
@@ -119,6 +142,12 @@ public class AssignmentDataAccess
             .MapToSingleOrDefault(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all assignments.
+    /// </summary>
+    /// <returns>
+    /// An enumerable collection of <see cref="Assignment"/> objects.
+    /// </returns>
     public IEnumerable<Assignment> GetMany()
     {
         string query = """
@@ -145,6 +174,15 @@ public class AssignmentDataAccess
             .MapMany(AssignmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all assignments associated with a specific employee ID.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of the employee.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Assignment"/> objects.
+    /// </returns>
     public IEnumerable<Assignment> GetManyByEmployeeId(int employeeId)
     {
         string query = """
@@ -176,6 +214,15 @@ public class AssignmentDataAccess
             .MapMany(AssignmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all assignments associated with a specific project ID.
+    /// </summary>
+    /// <param name="projectId">
+    /// The ID of the project.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Assignment"/> objects.
+    /// </returns>
     public IEnumerable<Assignment> GetManyByProjectId(int projectId)
     {
         string query = """
@@ -205,6 +252,15 @@ public class AssignmentDataAccess
             .MapMany(AssignmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Searches for assignments based on a search value in the AssignmentId or Name.
+    /// </summary>
+    /// <param name="searchValue">
+    /// The search value.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Assignment"/> objects matching the search criteria.
+    /// </returns>
     public IEnumerable<Assignment> Search(string searchValue)
     {
         string query = """
@@ -243,6 +299,15 @@ public class AssignmentDataAccess
             .MapMany(AssignmentMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Counts the number of documents associated with each assignment in a list of assignment IDs.
+    /// </summary>
+    /// <param name="assignmentIds">
+    /// A collection of assignment IDs.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of tuples, each containing an assignment ID and its document count.
+    /// </returns>
     public IEnumerable<(
         int AssignmentId,
         int DocumentCount
@@ -278,6 +343,15 @@ public class AssignmentDataAccess
             );
     }
 
+    /// <summary>
+    /// Inserts a new assignment into the database.
+    /// </summary>
+    /// <param name="model">
+    /// The assignment data to insert.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the insert operation.
+    /// </returns>
     public int Insert(InsertAssignmentModel model)
     {
         string query = """
@@ -332,6 +406,18 @@ public class AssignmentDataAccess
         return DataProvider.Instance.ExecuteNonQuery(query, [.. parameters]);
     }
 
+    /// <summary>
+    /// Updates an existing assignment in the database.
+    /// </summary>
+    /// <param name="assignmentId">
+    /// The ID of the assignment to update.
+    /// </param>
+    /// <param name="model">
+    /// The updated assignment data.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the update operation.
+    /// </returns>
     public int Update(int assignmentId, UpdateAssignmentModel model)
     {
         QueryBuildResult result = new SqlUpdateQueryBuilder("Assignment")
@@ -367,6 +453,15 @@ public class AssignmentDataAccess
         );
     }
 
+    /// <summary>
+    /// Deletes an assignment from the database.
+    /// </summary>
+    /// <param name="assignmentId">
+    /// The ID of the assignment to delete.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the delete operation.
+    /// </returns>
     public int Delete(int assignmentId)
     {
         string query = """

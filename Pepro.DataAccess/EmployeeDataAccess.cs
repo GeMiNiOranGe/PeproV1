@@ -12,6 +12,9 @@ public class EmployeeDataAccess
 {
     private static EmployeeDataAccess? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="EmployeeDataAccess"/>.
+    /// </summary>
     public static EmployeeDataAccess Instance
     {
         get => _instance ??= new();
@@ -20,6 +23,15 @@ public class EmployeeDataAccess
 
     private EmployeeDataAccess() { }
 
+    /// <summary>
+    /// Retrieves an employee by their ID.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of the employee to retrieve.
+    /// </param>
+    /// <returns>
+    /// The <see cref="Employee"/> if found, otherwise null.
+    /// </returns>
     public Employee? GetById(int employeeId)
     {
         string query = """
@@ -50,6 +62,12 @@ public class EmployeeDataAccess
             .MapToSingleOrDefault(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves all employees.
+    /// </summary>
+    /// <returns>
+    /// An enumerable collection of <see cref="Employee"/> objects.
+    /// </returns>
     public IEnumerable<Employee> GetMany()
     {
         string query = """
@@ -77,6 +95,15 @@ public class EmployeeDataAccess
             .MapMany(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves employees by a list of IDs.
+    /// </summary>
+    /// <param name="employeeIds">
+    /// A collection of employee IDs.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Employee"/> objects.
+    /// </returns>
     public IEnumerable<Employee> GetManyByIds(IEnumerable<int> employeeIds)
     {
         if (employeeIds == null || !employeeIds.Any())
@@ -115,6 +142,15 @@ public class EmployeeDataAccess
             .MapMany(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves employees assigned to a specific assignment.
+    /// </summary>
+    /// <param name="assignmentId">
+    /// The ID of the assignment.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Employee"/> objects.
+    /// </returns>
     public IEnumerable<Employee> GetManyByAssignmentId(int assignmentId)
     {
         string query = """
@@ -147,6 +183,15 @@ public class EmployeeDataAccess
             .MapMany(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves employees belonging to a specific department.
+    /// </summary>
+    /// <param name="departmentId">
+    /// The ID of the department.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Employee"/> objects.
+    /// </returns>
     public IEnumerable<Employee> GetManyByDepartmentId(int departmentId)
     {
         string query = """
@@ -177,6 +222,15 @@ public class EmployeeDataAccess
             .MapMany(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves employees associated with a specific project.
+    /// </summary>
+    /// <param name="projectId">
+    /// The ID of the project.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Employee"/> objects.
+    /// </returns>
     public IEnumerable<Employee> GetManyByProjectId(int projectId)
     {
         string query = """
@@ -212,6 +266,15 @@ public class EmployeeDataAccess
             .MapMany(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Searches for employees based on a search value.
+    /// </summary>
+    /// <param name="searchValue">
+    /// The search value.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Employee"/> objects matching the search criteria.
+    /// </returns>
     public IEnumerable<Employee> Search(string searchValue)
     {
         string query = """
@@ -251,6 +314,15 @@ public class EmployeeDataAccess
             .MapMany(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Retrieves phone numbers associated with an employee.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of the employee.
+    /// </param>
+    /// <returns>
+    /// An enumerable collection of <see cref="PhoneNumber"/> objects.
+    /// </returns>
     public IEnumerable<PhoneNumber> GetPhoneNumbersById(int employeeId)
     {
         string query = """
@@ -271,6 +343,15 @@ public class EmployeeDataAccess
             .MapMany(PhoneNumberMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Adds a new employee to the database.
+    /// </summary>
+    /// <param name="model">
+    /// The employee data to insert.
+    /// </param>
+    /// <returns>
+    /// The newly created <see cref="Employee"/> object, or null if the insertion failed.
+    /// </returns>
     public Employee? Add(InsertEmployeeModel model)
     {
         string query = """
@@ -339,6 +420,15 @@ public class EmployeeDataAccess
             .MapToSingleOrDefault(EmployeeMapper.FromDataRow);
     }
 
+    /// <summary>
+    /// Inserts a new employee into the database.
+    /// </summary>
+    /// <param name="model">
+    /// The employee data to insert.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the insert operation.
+    /// </returns>
     public int Insert(InsertEmployeeModel model)
     {
         string query = """
@@ -389,6 +479,18 @@ public class EmployeeDataAccess
         return DataProvider.Instance.ExecuteNonQuery(query, [.. parameters]);
     }
 
+    /// <summary>
+    /// Updates an existing employee in the database.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of the employee to update.
+    /// </param>
+    /// <param name="model">
+    /// The updated employee data.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the update operation.
+    /// </returns>
     public int Update(int employeeId, UpdateEmployeeModel model)
     {
         QueryBuildResult result = new SqlUpdateQueryBuilder("Employee")
@@ -422,6 +524,15 @@ public class EmployeeDataAccess
         );
     }
 
+    /// <summary>
+    /// Deletes an employee from the database.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of the employee to delete.
+    /// </param>
+    /// <returns>
+    /// The number of rows affected by the delete operation.
+    /// </returns>
     public int Delete(int employeeId)
     {
         string query = """
