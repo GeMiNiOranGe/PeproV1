@@ -12,6 +12,9 @@ public class EmployeeBusiness
 {
     private static EmployeeBusiness? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of the <see cref="EmployeeBusiness"/> class.
+    /// </summary>
     public static EmployeeBusiness Instance
     {
         get => _instance ??= new();
@@ -20,18 +23,39 @@ public class EmployeeBusiness
 
     private EmployeeBusiness() { }
 
+    /// <summary>
+    /// Retrieves all employees.
+    /// </summary>
+    /// <returns>
+    /// A collection of <see cref="EmployeeDto"/> representing all employees.
+    /// </returns>
     public IEnumerable<EmployeeDto> GetEmployees()
     {
         IEnumerable<Employee> employees = EmployeeDataAccess.Instance.GetMany();
         return employees.ToDtos();
     }
 
+    /// <summary>
+    /// Retrieves all employees as view models with related department and position information.
+    /// </summary>
+    /// <returns>
+    /// A collection of <see cref="EmployeeView"/>.
+    /// </returns>
     public IEnumerable<EmployeeView> GetEmployeeViews()
     {
         IEnumerable<Employee> employees = EmployeeDataAccess.Instance.GetMany();
         return MapEmployeesToViews(employees);
     }
 
+    /// <summary>
+    /// Searches employees by a given keyword and returns view models.
+    /// </summary>
+    /// <param name="searchValue">
+    /// The keyword to search for.
+    /// </param>
+    /// <returns>
+    /// A filtered collection of <see cref="EmployeeView"/>.
+    /// </returns>
     public IEnumerable<EmployeeView> SearchEmployeeViews(string searchValue)
     {
         IEnumerable<Employee> employees = EmployeeDataAccess.Instance.Search(
@@ -40,6 +64,15 @@ public class EmployeeBusiness
         return MapEmployeesToViews(employees);
     }
 
+    /// <summary>
+    /// Retrieves the display name of an employee by ID.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The employee's unique ID.
+    /// </param>
+    /// <returns>
+    /// The display name in the format "FirstName, LastName", or an empty string if not found.
+    /// </returns>
     public string GetDisplayNameByEmployeeId(int employeeId)
     {
         Employee? employee = EmployeeDataAccess.Instance.GetById(employeeId);
@@ -48,6 +81,15 @@ public class EmployeeBusiness
             : "";
     }
 
+    /// <summary>
+    /// Updates an existing employee's data if changes are detected.
+    /// </summary>
+    /// <param name="dto">
+    /// The data transfer object containing new employee data.
+    /// </param>
+    /// <returns>
+    /// The number of affected rows.
+    /// </returns>
     public int UpdateEmployee(EmployeeDto dto)
     {
         Employee? entity = EmployeeDataAccess.Instance.GetById(dto.EmployeeId);
@@ -56,7 +98,10 @@ public class EmployeeBusiness
             return 0;
         }
 
+        // Decrypts existing tax code for comparison.
         string? taxCode = EncryptionConverter.DecryptToString(entity.TaxCode);
+
+        // Encrypts new tax code before saving.
         byte[]? encryptedTaxCode = EncryptionConverter.EncryptFromString(
             dto.TaxCode
         );
@@ -92,11 +137,29 @@ public class EmployeeBusiness
         return EmployeeDataAccess.Instance.Update(dto.EmployeeId, model);
     }
 
+    /// <summary>
+    /// Deletes an employee by ID.
+    /// </summary>
+    /// <param name="employeeId">
+    /// The employee's unique ID.
+    /// </param>
+    /// <returns>
+    /// The number of affected rows.
+    /// </returns>
     public int DeleteEmployee(int employeeId)
     {
         return EmployeeDataAccess.Instance.Delete(employeeId);
     }
 
+    /// <summary>
+    /// Inserts a new employee and automatically creates a default account for them.
+    /// </summary>
+    /// <param name="dto">
+    /// The employee data to insert.
+    /// </param>
+    /// <returns>
+    /// The number of affected rows or 0 if insertion failed.
+    /// </returns>
     public int InsertEmployee(EmployeeDto dto)
     {
         InsertEmployeeModel model = dto.ToInsertModel();
@@ -110,12 +173,30 @@ public class EmployeeBusiness
         );
     }
 
+    /// <summary>
+    /// Retrieves a single employee by ID.
+    /// </summary>
+    /// <param name="employeeID">
+    /// The employee's unique ID.
+    /// </param>
+    /// <returns>
+    /// An <see cref="EmployeeDto"/> instance or null if not found.
+    /// </returns>
     public EmployeeDto? GetEmployeeByEmployeeId(int employeeID)
     {
         Employee? employee = EmployeeDataAccess.Instance.GetById(employeeID);
         return employee?.ToDto();
     }
 
+    /// <summary>
+    /// Retrieves all phone numbers associated with an employee.
+    /// </summary>
+    /// <param name="employeeID">
+    /// The employee's unique ID.
+    /// </param>
+    /// <returns>
+    /// An array of phone numbers.
+    /// </returns>
     public string[] GetPhoneNumbersByEmployeeId(int employeeID)
     {
         IEnumerable<PhoneNumber> phoneNumbers =
@@ -123,6 +204,15 @@ public class EmployeeBusiness
         return [.. phoneNumbers.Select(phoneNumber => phoneNumber.Number)];
     }
 
+    /// <summary>
+    /// Retrieves all employees belonging to a specific department.
+    /// </summary>
+    /// <param name="departmentId">
+    /// The department's unique ID.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="EmployeeDto"/>.
+    /// </returns>
     public IEnumerable<EmployeeDto> GetEmployeesByDepartmentId(int departmentId)
     {
         IEnumerable<Employee> employees =
@@ -130,6 +220,15 @@ public class EmployeeBusiness
         return employees.ToDtos();
     }
 
+    /// <summary>
+    /// Retrieves all employees associated with a specific assignment.
+    /// </summary>
+    /// <param name="assignmentId">
+    /// The assignment's unique ID.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="EmployeeDto"/>.
+    /// </returns>
     public IEnumerable<EmployeeDto> GetEmployeesByAssignmentId(int assignmentId)
     {
         IEnumerable<Employee> employees =
@@ -137,6 +236,15 @@ public class EmployeeBusiness
         return employees.ToDtos();
     }
 
+    /// <summary>
+    /// Retrieves all employees associated with a specific project.
+    /// </summary>
+    /// <param name="projectId">
+    /// The project's unique ID.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="EmployeeDto"/>.
+    /// </returns>
     public IEnumerable<EmployeeDto> GetEmployeesByProjectId(int projectId)
     {
         IEnumerable<Employee> employees =
@@ -144,6 +252,15 @@ public class EmployeeBusiness
         return employees.ToDtos();
     }
 
+    /// <summary>
+    /// Retrieves multiple employees by their IDs.
+    /// </summary>
+    /// <param name="employeeIds">
+    /// A collection of employee IDs.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="EmployeeDto"/>.
+    /// </returns>
     public IEnumerable<EmployeeDto> GetEmployeesByEmployeeIds(
         IEnumerable<int> employeeIds
     )
@@ -153,6 +270,15 @@ public class EmployeeBusiness
         return employees.ToDtos();
     }
 
+    /// <summary>
+    /// Maps employee entities to their view models, including related department and position names.
+    /// </summary>
+    /// <param name="employees">
+    /// The employee entities to map.
+    /// </param>
+    /// <returns>
+    /// A collection of <see cref="EmployeeView"/> with enriched information.
+    /// </returns>
     private IEnumerable<EmployeeView> MapEmployeesToViews(
         IEnumerable<Employee> employees
     )

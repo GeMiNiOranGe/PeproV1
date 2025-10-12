@@ -9,6 +9,9 @@ public class StatusBusiness
 {
     private static StatusBusiness? _instance;
 
+    /// <summary>
+    /// Gets the singleton instance of <see cref="StatusBusiness"/>.
+    /// </summary>
     public static StatusBusiness Instance
     {
         get => _instance ??= new();
@@ -17,6 +20,13 @@ public class StatusBusiness
 
     private StatusBusiness() { }
 
+    /// <summary>
+    /// Retrieves all available statuses.
+    /// </summary>
+    /// <returns>
+    /// A collection of <see cref="StatusDto"/> objects
+    /// representing all statuses in the system.
+    /// </returns>
     public IEnumerable<StatusDto> GetStatuses()
     {
         IEnumerable<Status> statuses = StatusDataAccess.Instance.GetMany();

@@ -4,6 +4,10 @@ using Pepro.Business.Utilities;
 
 namespace Pepro.Business.Security;
 
+/// <summary>
+/// Provides AES encryption and decryption functionality
+/// using a password-based key derivation algorithm (PBKDF2).
+/// </summary>
 static class AesEncryptor
 {
     private const string _password = "W34kP4ssw0rd@";
@@ -15,13 +19,23 @@ static class AesEncryptor
     private const int _keySize = 32;
     private const int _initialVectorSize = 16;
 
+    /// <summary>
+    /// Encrypts a plain text string using AES encryption.
+    /// </summary>
+    /// <param name="plainText">
+    /// The text to be encrypted.
+    /// </param>
+    /// <returns>
+    /// A byte array containing the encrypted data,
+    /// with the initialization vector (IV) prepended for later decryption.
+    /// </returns>
     public static byte[] Encrypt(string plainText)
     {
         using Aes aes = Aes.Create();
         using Rfc2898DeriveBytes rfc = new(_password, _salt, _iter, _hash);
 
         aes.Key = rfc.GetBytes(_keySize);
-        // default: 16 byte for AES
+        // AES uses a 16-byte (128-bit) initialization vector by default.
         aes.GenerateIV();
 
         ICryptoTransform encryptor = aes.CreateEncryptor();
@@ -34,21 +48,34 @@ static class AesEncryptor
         );
         using (StreamWriter streamWriter = new(cryptoStream))
         {
-            //Write all data to the stream
+            // Writes the plain text data into the crypto stream for encryption.
             streamWriter.Write(plainText);
         }
 
-        // Prepend the IV to the encrypted data so that it can be decrypted later
+        // Combines the IV and the encrypted data for storage or transmission.
         return ByteHandler.Combine(aes.IV, memoryStream.ToArray());
     }
 
+    /// <summary>
+    /// Decrypts a previously AES-encrypted byte array back into a string.
+    /// </summary>
+    /// <param name="cipherText">
+    /// The encrypted byte array containing the prepended initialization vector.
+    /// </param>
+    /// <returns>
+    /// The decrypted plain text string.
+    /// </returns>
     public static string Decrypt(byte[] cipherText)
     {
         using Aes aes = Aes.Create();
         using Rfc2898DeriveBytes rfc = new(_password, _salt, _iter, _hash);
 
         aes.Key = rfc.GetBytes(_keySize);
+
+        // Extracts the IV from the start of the encrypted byte array.
         aes.IV = [.. cipherText.Take(_initialVectorSize)];
+
+        // Extracts the actual encrypted content after the IV.
         byte[] buffer = [.. cipherText.Skip(_initialVectorSize)];
 
         ICryptoTransform decryptor = aes.CreateDecryptor();
@@ -61,7 +88,7 @@ static class AesEncryptor
         );
         using StreamReader streamReader = new(cryptoStream);
 
-        // Read the decrypted bytes from the decrypting stream and place them in a string
+        // Reads and returns the fully decrypted text from the crypto stream.
         return streamReader.ReadToEnd();
     }
 }
