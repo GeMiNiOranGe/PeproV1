@@ -103,12 +103,16 @@ public class PeproDataGridView : DataGridView
 
     public void ResetBackgroundColor()
     {
+        // Reverts to parent's background color when available;
+        // otherwise uses a default control shade.
         BackgroundColor =
             Parent != null ? Parent.BackColor : SystemColors.ControlDark;
     }
 
     public bool ShouldSerializeBackgroundColor()
     {
+        // Only serialize when the color differs from parent
+        // or default control color.
         return Parent != null
             ? BackgroundColor != Parent.BackColor
             : BackgroundColor != SystemColors.ControlDark;
@@ -119,7 +123,11 @@ public class PeproDataGridView : DataGridView
     )
     {
         base.OnDataBindingComplete(e);
+
+        // Clears all selections after binding to avoid preselected rows.
         ClearSelection();
+
+        // Ensures no cell remains active after binding is done.
         CurrentCell = null;
     }
 
@@ -128,6 +136,7 @@ public class PeproDataGridView : DataGridView
         base.OnParentBackColorChanged(e);
         if (Parent != null)
         {
+            // Keeps DataGridView visually consistent with its parent container.
             BackgroundColor = Parent.BackColor;
         }
     }
@@ -137,6 +146,7 @@ public class PeproDataGridView : DataGridView
         base.OnParentChanged(e);
         if (Parent != null)
         {
+            // Synchronizes background color with new parent container.
             BackgroundColor = Parent.BackColor;
         }
     }
@@ -144,14 +154,18 @@ public class PeproDataGridView : DataGridView
     protected override void OnRowPostPaint(DataGridViewRowPostPaintEventArgs e)
     {
         base.OnRowPostPaint(e);
+
+        // Calculates the displayed row number (1-based index).
         string rowNumber = (e.RowIndex + 1).ToString();
 
+        // Aligns row number text to the right and centers vertically.
         StringFormat format = new()
         {
             Alignment = StringAlignment.Far,
             LineAlignment = StringAlignment.Center,
         };
 
+        // Defines the bounds for the row header area where the number will be drawn.
         Rectangle headerBounds = new(
             e.RowBounds.Left - 2,
             e.RowBounds.Top + 1,
@@ -159,6 +173,7 @@ public class PeproDataGridView : DataGridView
             e.RowBounds.Height
         );
 
+        // Draws the row number text using the current header text color.
         using SolidBrush brush = new(RowHeadersDefaultCellStyle.ForeColor);
         e.Graphics.DrawString(
             rowNumber,

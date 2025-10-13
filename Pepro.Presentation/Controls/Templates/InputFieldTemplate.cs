@@ -11,8 +11,18 @@ public partial class InputFieldTemplate : PeproUserControl
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Gets or sets the text displayed by the label associated with the input field.
+    /// </summary>
+    /// <remarks>
+    /// This property affects the visible caption of the input field’s label.
+    /// It can be modified at both design time and runtime.
+    /// </remarks>
     [Browsable(true)]
     [Category("Appearance")]
+    [Description(
+        "The text displayed by the label associated with the input field."
+    )]
     [DefaultValue("")]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public virtual string LabelText
@@ -21,8 +31,15 @@ public partial class InputFieldTemplate : PeproUserControl
         set => inputFieldLabel.Text = value;
     }
 
+    /// <summary>
+    /// Gets or sets the font used to display the label text.
+    /// </summary>
+    /// <remarks>
+    /// Changing this value updates the label’s visual appearance immediately.
+    /// </remarks>
     [AllowNull]
     [Category("Appearance")]
+    [Description("The font used to display the label text.")]
     [DefaultValue(typeof(Font), "Segoe UI, 14px")]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
     public virtual Font LabelFont
