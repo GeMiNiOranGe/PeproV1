@@ -164,29 +164,6 @@ public class AccountDataAccess
     }
 
     /// <summary>
-    /// Enables/Disables an existing account in the database.
-    /// </summary>
-    /// <param name="accountId">
-    /// The ID of the account to enable/disable.
-    /// </param>
-    /// <returns>
-    /// The number of rows affected by the enable/disable operation.
-    /// </returns>
-    public int ToggleActive(int accountId)
-    {
-        string query = """
-            UPDATE Account
-            SET IsActive = CASE WHEN IsActive = 1 THEN 0 ELSE 1 END,
-                UpdatedAt = GetDate()
-            WHERE AccountId = @AccountId
-            """;
-        List<SqlParameter> parameters = [];
-        parameters.Add("AccountId", SqlDbType.Int, accountId);
-
-        return DataProvider.Instance.ExecuteNonQuery(query, [.. parameters]);
-    }
-
-    /// <summary>
     /// Inserts a new account into the database.
     /// </summary>
     /// <param name="model">

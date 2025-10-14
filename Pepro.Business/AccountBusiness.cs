@@ -139,7 +139,18 @@ public class AccountBusiness
     /// </returns>
     public int ToggleActiveAccount(int accountId)
     {
-        return AccountDataAccess.Instance.ToggleActive(accountId);
+        Account? account = AccountDataAccess.Instance.GetById(accountId);
+        if (account is null)
+        {
+            return 0;
+        }
+
+        UpdateAccountModel model = new()
+        {
+            IsActive = new(!account.IsActive, true),
+        };
+
+        return AccountDataAccess.Instance.Update(accountId, model);
     }
 
     /// <summary>
