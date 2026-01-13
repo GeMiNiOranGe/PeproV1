@@ -1,4 +1,4 @@
-# Pepro
+# PeproV1
 
 ![Make WinForms Great Again](https://img.shields.io/badge/WinForms-Great_Again-blue?style=for-the-badge&logo=windows)
 
@@ -12,7 +12,6 @@
 - 💰 Salary and payroll processing
 - 🔐 Secure data with symmetric encryption
 - 📊 Role-based access and permission control
-- 🧱 Layered architecture, 3-layer model (Presentation, Business, DataAccess)
 
 ## 🖥️ Technologies Used
 
@@ -29,6 +28,9 @@ Pepro/
 ├── Pepro.DataAccess/       # SQL Data Access Layer
 └── Database/               # SQL scripts (schema + seed)
 ```
+
+- Layered architecture, 3-layer model (Presentation, Business, DataAccess)
+- Client and database.
 
 ## 🚀 Getting Started
 
